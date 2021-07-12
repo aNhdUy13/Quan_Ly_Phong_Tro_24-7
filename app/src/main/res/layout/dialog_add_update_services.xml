@@ -46,42 +46,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:weightSum="2"
+                    android:gravity="center"
                     android:layout_weight="1">
-                    <LinearLayout
-                        android:layout_weight="0.7"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent">
 
-                        <TextView
-                            android:id="@+id/title1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:text="@string/housesSystem_add_layout_title_name"
-                            android:textSize="17dp" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.1">
-                        <TextView
-                            android:gravity="center|left"
-                            android:text=":"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:textSize="17dp"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_weight="1.1"
-                        android:layout_width="0dp"
-                        android:gravity="center"
-                        android:layout_height="match_parent">
-                        <EditText
-                            android:id="@+id/edtGetServiceName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-                    </LinearLayout>
+                    <EditText
+                        android:id="@+id/edtGetServiceName"
+                        android:drawableLeft="@drawable/mini_icon_name"
+                        android:hint="@string/housesSystem_add_layout_title_name"
+                        android:layout_width="270dp"
+                        android:layout_height="wrap_content"/>
+
 
                 </LinearLayout>
                 <LinearLayout
@@ -91,43 +65,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:weightSum="2"
+                    android:gravity="center"
                     android:layout_weight="1">
-                    <LinearLayout
-                        android:layout_weight="0.7"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent">
-                        <TextView
-                            android:id="@+id/txtRoomPrice"
-                            android:textSize="17dp"
-                            android:gravity="center"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="@string/serciesSystem_price_title"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.1">
-                        <TextView
-                            android:gravity="center|left"
-                            android:text=":"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:textSize="17dp"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_weight="1.1"
-                        android:layout_width="0dp"
-                        android:gravity="center"
-                        android:layout_height="match_parent">
 
-                        <EditText
-                            android:id="@+id/edtGetServicePrice"
-                            android:inputType="number"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-                    </LinearLayout>
+                    <EditText
+                        android:id="@+id/edtGetServicePrice"
+                        android:inputType="number"
+                        android:drawableLeft="@drawable/mini_icon_price"
+                        android:hint="@string/serciesSystem_price_title"
+                        android:layout_width="270dp"
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
                 <LinearLayout
@@ -142,46 +89,15 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:weightSum="2"
+                    android:gravity="center"
                     android:layout_weight="1">
-                    <LinearLayout
-                        android:layout_weight="0.7"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent">
-                        <TextView
-                            android:id="@+id/txtNote"
-                            android:textSize="17dp"
-                            android:gravity="center"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="@string/roomSystem_add_layout_note"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="0.1">
-                        <TextView
-                            android:gravity="center|left"
-                            android:text=":"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:textSize="17dp"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_weight="1.1"
-                        android:layout_width="0dp"
-                        android:gravity="center"
-                        android:layout_height="match_parent">
-                        <ScrollView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-                            <EditText
-                                android:id="@+id/edtGetServiceNote"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
-                        </ScrollView>
+                    <EditText
+                        android:id="@+id/edtGetServiceNote"
+                        android:drawableLeft="@drawable/mini_icon_note"
+                        android:hint="@string/roomSystem_add_layout_note"
+                        android:layout_width="270dp"
+                        android:layout_height="wrap_content" />
 
-                    </LinearLayout>
 
                 </LinearLayout>
 
