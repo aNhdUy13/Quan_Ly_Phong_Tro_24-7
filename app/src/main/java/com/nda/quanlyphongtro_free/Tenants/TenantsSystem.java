@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.nda.quanlyphongtro_free.MainActivity;
 import com.nda.quanlyphongtro_free.R;
+import com.startapp.sdk.adsbase.StartAppAd;
 
 import java.util.ArrayList;
 
@@ -61,6 +62,7 @@ public class TenantsSystem extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+
             }
         });
         imgAddTenants.setOnClickListener(new View.OnClickListener() {

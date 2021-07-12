@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.nda.quanlyphongtro_free.MainActivity;
 import com.nda.quanlyphongtro_free.R;
 import com.nda.quanlyphongtro_free.Rooms.RoomsSystem;
+import com.startapp.sdk.adsbase.StartAppAd;
 
 import java.util.ArrayList;
 
@@ -74,6 +75,8 @@ public class HousesSystem extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                StartAppAd.showAd(getApplicationContext());
+
             }
         });
 
@@ -120,7 +123,7 @@ public class HousesSystem extends AppCompatActivity {
                     MainActivity.database.INSERT_HOUSES(housesName,housesLocation);
                     displayAvailableHOuses();
                     dialogAddHouses.dismiss();
-
+                    StartAppAd.showAd(getApplicationContext());
                 }
             }
         });
