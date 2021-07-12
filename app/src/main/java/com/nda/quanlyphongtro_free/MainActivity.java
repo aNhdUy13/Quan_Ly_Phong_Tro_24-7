@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static String tableRoom = "Rooms";
-    public static String column1_rooms_id    = "roomId"; // Room can belong to some houses.
+    public static String column1_rooms_id               = "roomId"; // Room can belong to some houses.
     public static String column2ForeignKey_houses_id    = "housesId"; // Room can belong to some houses.
     public static String column3_rooms_roomPrice        = "roomPrice";
     public static String column4_rooms_note             = "roomsNote";
@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     public static String column2_tenants_name           = "tenantsName";
     public static String column3_tenants_phonenumber    = "tenantsPhonenumber";
     public static String column4_tenants_note           = "tenantsNote";
+    public static String column5_ForeignKey_houses_id   = "housesId";
 
     public static String tableServices       = "Services";
     public static String column1_services_id            = "servicesId"; // Tenants can belong to some rooms.
@@ -56,8 +57,18 @@ public class MainActivity extends AppCompatActivity {
     public static String column4_services_note          = "servicesNote";
 
     public static String tableContracts       = "Contracts";
-    public static String column1_contract_id            = "contractId"; // Tenants can belong to some rooms.
-    public static String column2_contract_img           = "contractImg"; // Tenants can belong to some rooms.
+    public static String column1_contract_id            = "contractId";
+    public static String column2_contract_img           = "contractImg";
+
+    public static String tablePayment       = "Payments";
+    public static String column1_payment_id                     = "paymentsId";
+    public static String columnForeignKey_payment_rooms_id      = "roomId";
+    public static String column2_payment_money                  = "paymentMoney";
+    public static String column3_payment_status                 = "paymentStatus";
+    public static String column4_payment_date                   = "paymentDate";
+    public static String column5_payment_note                   = "paymentNote";
+    public static String column6_ForeignKey_houses_id           = "housesId";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,7 +169,8 @@ public class MainActivity extends AppCompatActivity {
                 + columnForeignKey_rooms_id + " INTEGER , "
                 + column2_tenants_name + " VARCHAR(200), "
                 + column3_tenants_phonenumber + " VARCHAR(200),"
-                + column4_tenants_note + " VARCHAR(200) )");
+                + column4_tenants_note + " VARCHAR(200),"
+                + column5_ForeignKey_houses_id + " VARCHAR(200) )");
 //        database.QueryDate("DROP TABLE IF EXISTS " + tableTenants);
 
         database.QueryDate("CREATE TABLE IF NOT EXISTS " + tableServices
@@ -172,6 +184,17 @@ public class MainActivity extends AppCompatActivity {
                 + "(" + column1_contract_id + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + column2_contract_img + " BLOB )");
         //database.QueryDate("DROP TABLE IF EXISTS " + tableContracts);
+
+        database.QueryDate("CREATE TABLE IF NOT EXISTS " + tablePayment
+                + "(" + column1_payment_id + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + columnForeignKey_payment_rooms_id + " INTEGER , "
+                + column2_payment_money + " VARCHAR(200), "
+                + column3_payment_status + " VARCHAR(200), "
+                + column4_payment_date + " VARCHAR(200), "
+                + column5_payment_note + " VARCHAR(200), "
+                + column6_ForeignKey_houses_id + " VARCHAR(200) )");
+//        database.QueryDate("DROP TABLE IF EXISTS " + tablePayment);
+
     }
 
     private void mapting() {

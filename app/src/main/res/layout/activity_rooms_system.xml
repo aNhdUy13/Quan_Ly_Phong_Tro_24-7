@@ -54,8 +54,6 @@
 
             </LinearLayout>
         </LinearLayout>
-
-
         <LinearLayout
             android:id="@+id/roomContent"
             android:layout_width="match_parent"

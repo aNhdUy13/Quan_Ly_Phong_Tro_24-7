@@ -62,16 +62,17 @@ public class db extends SQLiteOpenHelper {
 
     }
 
-    public void INSERT_TENANTS(int roomID,String tenantsName, String tenantsPhonenumber,String tenantsNote)
+    public void INSERT_TENANTS(int roomID,String tenantsName, String tenantsPhonenumber,String tenantsNote,int houseID)
     {
         SQLiteDatabase database = getWritableDatabase();
-        String sql = "INSERT INTO Tenants VALUES (null,?,?,?,?)";
+        String sql = "INSERT INTO Tenants VALUES (null,?,?,?,?,?)";
         SQLiteStatement statement = database.compileStatement(sql);
         statement.clearBindings();
         statement.bindLong(1,roomID);
         statement.bindString(2,tenantsName);
         statement.bindString(3,tenantsPhonenumber);
         statement.bindString(4,tenantsNote);
+        statement.bindLong(5,houseID);
 
         statement.executeInsert();
 
@@ -100,5 +101,22 @@ public class db extends SQLiteOpenHelper {
 
 
         statement.executeInsert();
+    }
+
+    public void INSERT_PAYMENT(int roomId, String money, String status, String date, String note,int houseID)
+    {
+        SQLiteDatabase database = getWritableDatabase();
+        String sql = "INSERT INTO Payments VALUES (null,?,?,?,?,?,?)";
+        SQLiteStatement statement = database.compileStatement(sql);
+        statement.clearBindings();
+        statement.bindLong(1,roomId);
+        statement.bindString(2,money);
+        statement.bindString(3,status);
+        statement.bindString(4,date);
+        statement.bindString(5,note);
+        statement.bindLong(6,houseID);
+
+        statement.executeInsert();
+
     }
 }

@@ -17,9 +17,11 @@
         android:roundIcon="@mipmap/app_logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.QuanLyPhongTro_FREE">
-
-        <activity android:name=".Setting.Billing.Billing"
+        <activity android:name=".Rooms.Payment.PaymentSystem"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
+        <activity
+            android:name=".Setting.Billing.Billing"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
             android:name=".Setting.Setting"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
@@ -52,12 +54,8 @@
             android:name=".Houses.HousesSystem"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-
-
-
-
-
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

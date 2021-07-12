@@ -8,10 +8,13 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,19 +32,16 @@ public class RoomsSystem extends AppCompatActivity {
     EditText edtGetRoomName,edtGetRoomPrice,edtGetNote;
     Button btnAddRoom;
     public int house_id;
+    private String houseName;
 
     ArrayList<Rooms> roomsArrayList;
     RoomAdapter roomAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rooms_system);
-
         mapting();
-
-        house_id = getIntent().getIntExtra("house_id",0);
-        String houseName = getIntent().getStringExtra("house_name");
-        txtHouseNameInRoom.setText(houseName);
 
         initiate();
         setUpListView();
@@ -56,6 +56,13 @@ public class RoomsSystem extends AppCompatActivity {
     }
 
     private void initiate() {
+
+
+        // Get House ID
+        house_id = getIntent().getIntExtra("house_id",0);
+        houseName = getIntent().getStringExtra("house_name");
+        txtHouseNameInRoom.setText(houseName);
+
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +80,7 @@ public class RoomsSystem extends AppCompatActivity {
 
 
 
+
     }
 
 
@@ -81,8 +89,8 @@ public class RoomsSystem extends AppCompatActivity {
         Intent intent = new Intent(RoomsSystem.this, TenantsSystem.class);
         intent.putExtra("roomID",id);
         intent.putExtra("roomName",roomName);
+        intent.putExtra("houseIDFromRoom",house_id);
         startActivity(intent);
-
     }
     public void showNote(String note)
     {
@@ -157,6 +165,7 @@ public class RoomsSystem extends AppCompatActivity {
             public void onClick(View v) {
                 MainActivity.database.QueryDate("DELETE FROM Rooms WHERE roomId = '" + id + "'");
                 MainActivity.database.QueryDate("DELETE FROM Tenants WHERE roomId = '" + id + "'");
+                MainActivity.database.QueryDate("DELETE FROM Payments WHERE roomId = '" + id + "'");
 
                 Toast.makeText(RoomsSystem.this,"Delete Successful ! ",Toast.LENGTH_LONG).show();
                 displayAvailableRoom();
@@ -230,7 +239,7 @@ public class RoomsSystem extends AppCompatActivity {
         lvRooms             = (ListView) findViewById(R.id.lvRooms);
         txtHouseNameInRoom  = (TextView) findViewById(R.id.txtHouseNameInRoom);
 
-
     }
+
 
 }

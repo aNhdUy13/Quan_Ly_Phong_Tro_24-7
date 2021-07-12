@@ -13,7 +13,7 @@
         android:layout_marginRight="5dp"
         android:layout_width="match_parent"
         app:cardCornerRadius="30dp"
-        android:layout_height="300dp">
+        android:layout_height="400dp">
         <LinearLayout
             android:weightSum="10"
             android:layout_width="match_parent"
@@ -24,75 +24,96 @@
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1.8">
+                android:layout_weight="1.3">
 
                 <TextView
-                    android:textStyle="bold"
-                    android:id="@+id/txtTitleTenant"
+                    android:id="@+id/txtTitle_dialog_add_update"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="@string/tenantsSystem_add_title"
+                    android:textStyle="bold"
+                    android:text="Thêm Thanh Toán"
                     android:textSize="24dp" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:weightSum="3.2"
+                android:weightSum="5"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="6">
+                android:layout_weight="7">
 
                 <LinearLayout
+                    android:gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:gravity="center"
                     android:layout_weight="1">
+
                     <EditText
-                        android:id="@+id/edtGetTenantName"
-                        android:hint="@string/housesSystem_add_layout_title_name"
-                        android:drawableLeft="@drawable/mini_icon_name"
+                        android:id="@+id/edtGetPaymentMoney"
+                        android:textSize="14dp"
+
+                        android:drawableLeft="@drawable/mini_icon_money"
+                        android:hint="Số Tiền"
                         android:layout_width="270dp"
                         android:layout_height="wrap_content"/>
+
 
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="0.1"/>
+                    android:layout_weight="0.3"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:gravity="center"
                     android:layout_weight="1">
                     <EditText
-                        android:id="@+id/edtGetPhoneNumber"
-                        android:inputType="number"
-                        android:drawableLeft="@drawable/mini_icon_phonenumber"
-                        android:hint="@string/tenantsSystem_phonenumber_title"
+                        android:id="@+id/edtGetPaymentTime"
+                        android:textSize="14dp"
+                        android:drawableLeft="@drawable/mini_icon_time"
+                        android:hint="Thời Gian (Ngày , Giờ ...)"
                         android:layout_width="270dp"
                         android:layout_height="wrap_content" />
 
                 </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="0.1"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="0.1"/>
+                    android:layout_weight="0.3"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:gravity="center"
                     android:layout_weight="1">
                     <EditText
-                        android:id="@+id/edtGetTenantNote"
+                        android:id="@+id/edtGetPaymentStatus"
+                        android:textSize="14dp"
+                        android:drawableLeft="@drawable/mini_icon_status"
+                        android:hint="Trạng Thái (Hoàn Thành ?)"
+                        android:layout_width="270dp"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.3"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:gravity="center"
+                    android:layout_weight="1">
+                    <EditText
+                        android:id="@+id/edtGetPaymentNote"
+                        android:textSize="14dp"
                         android:drawableLeft="@drawable/mini_icon_note"
-                        android:hint="@string/roomSystem_add_layout_note"
+                        android:hint="Ghi Chú"
                         android:layout_width="270dp"
                         android:layout_height="wrap_content" />
 
@@ -105,13 +126,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:gravity="center"
-                android:layout_weight="2.2">
+                android:layout_weight="1.7">
 
                 <Button
-                    android:id="@+id/btnAddTenant"
+                    android:id="@+id/btnAddPayment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="#FF9800"
+                    android:backgroundTint="#3B883E"
                     android:text="@string/housesSystem_add_layout_button_add"
                     android:textColor="@color/white" />
 
@@ -120,7 +141,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:backgroundTint="#FF9800"
+                    android:backgroundTint="#3B883E"
                     android:text="@string/general_cancel"
                     android:textColor="@color/white" />
             </LinearLayout>

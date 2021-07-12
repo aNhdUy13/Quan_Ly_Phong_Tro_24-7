@@ -41,6 +41,7 @@ public class RoomAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return 0;
     }
+
     class ViewHolder {
         TextView txtRoomName, txtRoomTenants,txtShowRoomPrice;
         ImageView imgUpdateRoom, imgDeleteRoom,imgShowRoomNote;

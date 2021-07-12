@@ -190,6 +190,8 @@ public class HousesSystem extends AppCompatActivity {
             public void onClick(View v) {
                 MainActivity.database.QueryDate("DELETE FROM Houses WHERE housesId = '" + id + "'");
                 MainActivity.database.QueryDate("DELETE FROM Rooms WHERE housesId = '" + id + "'");
+                MainActivity.database.QueryDate("DELETE FROM Tenants WHERE housesId = '" + id + "'");
+                MainActivity.database.QueryDate("DELETE FROM Payments WHERE housesId = '" + id + "'");
 
                 Toast.makeText(HousesSystem.this,"Delete Successful ! ",Toast.LENGTH_LONG).show();
                 displayAvailableHOuses();

@@ -1,14 +1,18 @@
 package com.nda.quanlyphongtro_free.Tenants;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,7 +22,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.nda.quanlyphongtro_free.MainActivity;
 import com.nda.quanlyphongtro_free.R;
-import com.startapp.sdk.adsbase.StartAppAd;
+import com.nda.quanlyphongtro_free.Rooms.Payment.PaymentSystem;
+import com.nda.quanlyphongtro_free.Rooms.RoomsSystem;
 
 import java.util.ArrayList;
 
@@ -26,13 +31,16 @@ public class TenantsSystem extends AppCompatActivity {
 
     ImageView imgBack, imgAddTenants;
     TextView txtHRoomNameInTerants;
-    private int roomID;
+    private int roomID, house_id;
+    private String roomName;
     EditText edtGetTenantName,edtGetPhoneNumber,edtGetNote;
 
 
     ListView lvTenants;
     ArrayList<Tenants> tenantsArrayList;
     TenantsAdapter tenantsAdapter;
+
+    LinearLayout llGoToRoomPayment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +62,26 @@ public class TenantsSystem extends AppCompatActivity {
     }
 
     private void initiate() {
+
+        // Get extra from RoomSystem
         roomID  = getIntent().getIntExtra("roomID",0);
-        String roomName = getIntent().getStringExtra("roomName");
+        roomName = getIntent().getStringExtra("roomName");
         txtHRoomNameInTerants.setText(roomName);
+
+        house_id  = getIntent().getIntExtra("houseIDFromRoom",0);
+
+        // Put extra to PaymentSystem
+        llGoToRoomPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TenantsSystem.this, PaymentSystem.class);
+                intent.putExtra("roomIDFromTenant",roomID);
+                intent.putExtra("roomNameFromTenant",roomName);
+                intent.putExtra("houseIDFromRoom",house_id);
+
+                startActivity(intent);
+            }
+        });
 
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +123,7 @@ public class TenantsSystem extends AppCompatActivity {
                 note   = edtGetNote.getText().toString().trim();
                 tenantName   = edtGetTenantName.getText().toString().trim();
 
-                MainActivity.database.INSERT_TENANTS(roomID,tenantName,tenantPhoneNumber,note);
+                MainActivity.database.INSERT_TENANTS(roomID,tenantName,tenantPhoneNumber,note,house_id);
                 displayTenants();
                 dialog.dismiss();
             }
@@ -225,5 +250,11 @@ public class TenantsSystem extends AppCompatActivity {
         txtHRoomNameInTerants   = (TextView) findViewById(R.id.txtHRoomNameInTerants);
         imgAddTenants   = (ImageView) findViewById(R.id.imgAddTenants);
         lvTenants       = (ListView) findViewById(R.id.lvTenants);
+
+        llGoToRoomPayment   = (LinearLayout) findViewById(R.id.llGoToRoomPayment);
+
+
     }
+
+
 }
