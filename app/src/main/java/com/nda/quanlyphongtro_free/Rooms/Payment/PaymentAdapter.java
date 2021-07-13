@@ -80,11 +80,14 @@ public class PaymentAdapter extends BaseAdapter {
         holder.imgShowNotePayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                context.dialogShowPaymentNote(payments.getPaymentNote());
             }
         });
         holder.imgUpdatePayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                context.dialogUpdatePayment(payments.getPaymentId(),payments.getPaymentPurchased(),payments.getPaymentStatus(),
+                        payments.getPaymentPurchaseDate(),payments.getPaymentNote());
             }
         });
 

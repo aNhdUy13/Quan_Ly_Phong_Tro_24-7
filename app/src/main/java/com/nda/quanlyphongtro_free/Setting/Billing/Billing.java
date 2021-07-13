@@ -266,7 +266,7 @@ public class Billing extends AppCompatActivity implements PurchasesUpdatedListen
             //for new play console
             //To get key go to Developer Console > Select your app > Monetize > Monetization setup
 
-            String base64Key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApf3IhQuYGfkkegn6DHXuyGxoM5EPlmeaPLJmBsMQTntMO6LIJvXyOY16lvfSqkEMHkcAMEmfbrdJBCdWtkTNM0bDtT6yOtuisevzrbZzBxyq0IzpT+cElMdnyEwVSYzqsmB7huvalqWGgmOgpsW1pR8UxmK469IoM4rffnCkdoCqXuSTVw89kW7udXwl2e3j32/NPSOR24XxIrxcR3y0gxcjwhinf2irLnAznoFWUZvpmGpqoKDE0zZ8ivWsMMS7hdkOBzTP/Yhns+hJP5gEjd3M4nQOKUlTaLwgOR9XO6U3fCfwRCz1uW5AIrzGSaEAuMYrqnaj4hXs/2WTwdE8bwIDAQAB";
+            String base64Key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsQDWyOIezvzOUI5rZICt0wLIDtPfC13uz+JAPleUE22yDPwSYoh7HcM7mUPBAwoEgkVbNy3yZLWPpkqK2ofWFoxHJU5JhT289uGge/g8viY+9BxtMM1Ynsp2X3ph/kSceVo1x5X4avklWzc74Xt5Q8iRsPY2N+E2VxIZD9/5g7rtJlXtfEACx0ADd9VRQcWOEgl87vaVbQdCwFQtTjotxZ5gbBWbtifGa4Sj5HVDFwD7UyzxVqNSvQmejE7wMOko9BksoDA1WpIH6vG0EeKaJxnYbYsX4y82IbqOtKJMn8sC6/TdCFpO9cL68f6TBKVG8tQKv5N3ziHpnj7+icAREQIDAQAB";
             return SecurityBilling.verifyPurchase(base64Key, signedData, signature);
         } catch (IOException e) {
             return false;

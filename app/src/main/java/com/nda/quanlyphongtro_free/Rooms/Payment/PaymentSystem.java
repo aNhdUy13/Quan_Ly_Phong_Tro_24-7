@@ -31,9 +31,9 @@ public class PaymentSystem extends AppCompatActivity {
     LinearLayout llGoBackRoom;
     private int roomFromTenantId, house_id;
     ImageView  imgAddPaymentForRoom;
-    TextView txtGetRoom;
+    TextView txtGetRoom, txtShowNote, txtTitle_dialog_add_update;
     EditText edtGetPaymentMoney,edtGetPaymentTime,edtGetPaymentStatus,edtGetPaymentNote;
-    Button btnAddPayment,btnCancel;
+    Button btnAddPayment,btnCancel, btnOKNote,btnUpdatePayment;
 
     ArrayList<Payments> paymentsArrayList;
     PaymentAdapter paymentAdapter;
@@ -167,6 +167,73 @@ public class PaymentSystem extends AppCompatActivity {
 
     }
 
+    public void dialogUpdatePayment(int paymentID, String paymentMoney, String paymentStatus, String paymentDate, String paymentNote)
+    {
+        Dialog dialogUpdate = new Dialog(PaymentSystem.this);
+        dialogUpdate.setContentView(R.layout.dialog_add_update_payment);
+        dialogUpdate.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        txtTitle_dialog_add_update  = (TextView) dialogUpdate.findViewById(R.id.txtTitle_dialog_add_update);
+        edtGetPaymentMoney      = (EditText) dialogUpdate.findViewById(R.id.edtGetPaymentMoney);
+        edtGetPaymentTime       = (EditText) dialogUpdate.findViewById(R.id.edtGetPaymentTime);
+        edtGetPaymentStatus     = (EditText) dialogUpdate.findViewById(R.id.edtGetPaymentStatus);
+        edtGetPaymentNote       = (EditText) dialogUpdate.findViewById(R.id.edtGetPaymentNote);
+        btnCancel       = (Button) dialogUpdate.findViewById(R.id.btnCancel);
+        btnUpdatePayment   = (Button) dialogUpdate.findViewById(R.id.btnAddPayment);
+
+        edtGetPaymentMoney.setText(paymentMoney);
+        edtGetPaymentTime.setText(paymentDate);
+        edtGetPaymentStatus.setText(paymentStatus);
+        edtGetPaymentNote.setText(paymentNote);
 
 
+        txtTitle_dialog_add_update.setText("SỬA THANH TOÁN");
+        btnUpdatePayment.setText("LƯU");
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogUpdate.dismiss();
+            }
+        });
+        btnUpdatePayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String money    = edtGetPaymentMoney.getText().toString().trim();
+                String status    = edtGetPaymentStatus.getText().toString().trim();
+                String date    = edtGetPaymentTime.getText().toString().trim();
+                String note    = edtGetPaymentNote.getText().toString().trim();
+
+                MainActivity.database.QueryDate("UPDATE Payments SET paymentMoney = '" + money + "'" +
+                        ", paymentStatus = '" + status  + "' , paymentDate = '" + date +
+                         "' , paymentNote = '" + note + "'  WHERE paymentsId = '" + paymentID + "' ");
+
+                Toast.makeText(getApplicationContext(),"Update Successful ! " ,Toast.LENGTH_LONG).show();
+
+                displayPayment();
+                dialogUpdate.dismiss();
+            }
+        });
+
+
+        dialogUpdate.show();
+    }
+
+    public void dialogShowPaymentNote(String paymentNote) {
+        Dialog dialogNote = new Dialog(PaymentSystem.this);
+        dialogNote.setContentView(R.layout.dialog_show_note);
+        dialogNote.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        txtShowNote = (TextView) dialogNote.findViewById(R.id.txtShowNote);
+        btnOKNote = (Button) dialogNote.findViewById(R.id.btnOKNote);
+        btnOKNote.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogNote.dismiss();
+            }
+        });
+
+        txtShowNote.setText(paymentNote);
+
+        dialogNote.show();
+    }
 }
