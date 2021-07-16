@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Quản Lý Phòng Trọ 247</string>
 
-    <string name="share_subject" translatable="false">Timetable</string>
-    <string name="share_using" translatable="false">Timetable</string>
+    <string name="share_subject" translatable="false">Quản Lý Phòng Trọ 247</string>
+    <string name="share_using" translatable="false">Quản Lý Phòng Trọ 247</string>
 
     <string name="main_act_house_title">Số Nhà</string>
     <string name="main_act_room_title">Số Phòng</string>

@@ -122,7 +122,7 @@ public class Setting extends AppCompatActivity {
     }
     private void shareApp() {
         Intent intent = new Intent(Intent.ACTION_SEND);
-        String shareBody = "Please Search on CHplay";
+        String shareBody = "https://play.google.com/store/apps/details?id=com.nda.quanlyphongtro_free";
         /*The type of the content is text, obviously.*/
         intent.setType("text/plain");
         /*Applying information Subject and Body.*/
