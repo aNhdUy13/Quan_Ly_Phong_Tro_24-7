@@ -11,8 +11,8 @@ android {
         applicationId "com.nda.quanlyphongtro_free"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 5
-        versionName "5.0"
+        versionCode 6
+        versionName "6.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
