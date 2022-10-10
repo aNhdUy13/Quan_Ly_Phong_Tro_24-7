@@ -84,26 +84,14 @@
             android:id="@+id/HousesContent"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="8.3"
+            android:layout_weight="9.3"
             android:orientation="vertical">
             <ListView
                 android:id="@+id/lvContract"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </LinearLayout>
-        <LinearLayout
-            android:id="@+id/ads"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center|bottom">
 
-            <com.startapp.sdk.ads.banner.Banner
-                android:id="@+id/housesAd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

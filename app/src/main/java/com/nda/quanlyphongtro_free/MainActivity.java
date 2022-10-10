@@ -15,8 +15,7 @@ import com.nda.quanlyphongtro_free.Houses.HousesSystem;
 import com.nda.quanlyphongtro_free.Services.ServicesSystem;
 import com.nda.quanlyphongtro_free.Setting.Setting;
 import com.nda.quanlyphongtro_free.Tenants.AllTenantsSystem;
-import com.startapp.sdk.adsbase.StartAppAd;
-import com.startapp.sdk.adsbase.StartAppSDK;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,8 +72,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //StartAppSDK.setTestAdsEnabled(true);
-        StartAppAd.disableSplash();
         mapting();
         createDatabase();
         initiate();

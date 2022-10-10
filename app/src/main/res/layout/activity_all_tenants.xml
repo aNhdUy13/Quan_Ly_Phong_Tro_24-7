@@ -60,19 +60,6 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/showAds"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center|bottom"
-            android:orientation="vertical">
-            <com.startapp.sdk.ads.banner.Banner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/roomAds"/>
-
-        </LinearLayout>
 
     </LinearLayout>
 

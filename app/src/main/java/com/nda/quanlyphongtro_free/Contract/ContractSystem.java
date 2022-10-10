@@ -22,7 +22,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.nda.quanlyphongtro_free.MainActivity;
 import com.nda.quanlyphongtro_free.R;
-import com.startapp.sdk.adsbase.StartAppAd;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -102,8 +101,6 @@ public class ContractSystem extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
-                StartAppAd.showAd(getApplicationContext());
-
             }
         });
         imgAddContractFromLibrary.setOnClickListener(new View.OnClickListener() {
@@ -179,8 +176,6 @@ public class ContractSystem extends AppCompatActivity {
                 MainActivity.database.INSERT_CONTRACT(hinhAnh);
                 displayContract();
                 dialogGetIMG.dismiss();
-                StartAppAd.showAd(getApplicationContext());
-
             }
         });
 
