@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.nda.quanlyphongtro_free.Contract.ContractSystem;
 import com.nda.quanlyphongtro_free.Houses.HousesSystem;
 import com.nda.quanlyphongtro_free.Services.ServicesSystem;
@@ -75,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         mapting();
         createDatabase();
         initiate();
+
     }
     private void initiate() {
         cvNhaTro.setOnClickListener(new View.OnClickListener() {
@@ -205,6 +208,6 @@ public class MainActivity extends AppCompatActivity {
         getTotalTenants = (TextView) findViewById(R.id.getTotalTenants);
         getTotalAvailableServices   = (TextView) findViewById(R.id.getTotalAvailableServices);
 
-        imgSetting  = (ImageView) findViewById(R.id.imgSetting);
+        imgSetting  = (ImageView) findViewById(R.id.img_setting);
     }
 }

@@ -42,4 +42,5 @@
     <string name="setting_timetable">Thời Khóa Biểu - Thời Gian Biểu</string>
     <string name="general_cancel">HỦY</string>
     <string name="dialog_title_delete">BẠN MUỐN XÓA ?</string>
+    <string name="message_inquiring">"Đang Truy Vấn "</string>
 </resources>

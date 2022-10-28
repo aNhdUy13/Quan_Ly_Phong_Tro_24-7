@@ -1,23 +1,22 @@
-package com.nda.quanlyphongtro_free.Services;
+package com.nda.quanlyphongtro_free.Model;
 
 public class Service {
-    private int id;
-    private String name, price, note;
+    private String id;
+    private String name, price, unit;
 
-    public Service(int id, String name, String price, String note) {
+    public Service(){}
+
+    public Service(String id, String name, String price, String unit) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.note = note;
+        this.unit = unit;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -36,11 +35,11 @@ public class Service {
     }
 
 
-    public String getNote() {
-        return note;
+    public String getUnit() {
+        return unit;
     }
 
-    public void setNote(String note) {
-        this.note = note;
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 }

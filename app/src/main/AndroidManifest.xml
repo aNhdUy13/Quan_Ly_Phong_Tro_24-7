@@ -18,48 +18,47 @@
         android:roundIcon="@mipmap/app_logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.QuanLyPhongTro_FREE">
-        <activity android:name=".Rooms.Payment.PaymentSystem"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
+        <activity android:name=".Rooms.Payment.PaymentSystem"/>
         <activity
-            android:name=".Setting.Billing.Billing"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+            android:name=".Setting.Billing.Billing"/>
         <activity
-            android:name=".Setting.Setting"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+            android:name=".Setting.Setting"/>
         <activity
             android:name=".Contract.ContractSystem"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Tenants.AllTenantsSystem"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Services.ServicesSystem"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".Tenants.TenantsSystem"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Rooms.RoomsSystem"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Houses.HousesSystem"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".MainActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+
+        <activity android:name=".LoginSignUpActivity"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity">
+
+        </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
     </application>
 

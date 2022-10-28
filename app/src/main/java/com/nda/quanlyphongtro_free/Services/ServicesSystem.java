@@ -5,65 +5,81 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.nda.quanlyphongtro_free.MainActivity;
+import com.nda.quanlyphongtro_free.Model.Service;
 import com.nda.quanlyphongtro_free.R;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class ServicesSystem extends AppCompatActivity {
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef  = database.getReference();
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();;
+
 
     ImageView imgAddServices,imgBack;
-    EditText edtGetServiceName,edtGetServicePrice,edtGetServiceNote;
-    ArrayList<Service> serviceArrayList;
-    ServicesAdapter servicesAdapter;
-    ListView lvServices;
+    TextInputEditText textInputEdt_getServiceName,textInputEdt_getServicePrice,textInputEdt_getServiceUnit;
+
+    RecyclerView rcv_services;
+    AdapterServices adapterServices;
+    List<Service> serviceList = new ArrayList<>();
+
     TextView txtTitleService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_services_system);
         mapting();
-        initiation();
-        setUpListView();
+        setRCV();
+
+        init();
 
     }
 
-    private void setUpListView() {
-        serviceArrayList = new ArrayList<>();
-        servicesAdapter = new ServicesAdapter(serviceArrayList,R.layout.item_layout_services,this);
-        lvServices.setAdapter(servicesAdapter);
+    private void setRCV() {
+        adapterServices = new AdapterServices(this, serviceList);
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(3,
+                StaggeredGridLayoutManager.VERTICAL);
+
+        rcv_services.setLayoutManager(staggeredGridLayoutManager);
+        rcv_services.setAdapter(adapterServices);
 
         displayServices();
     }
 
-    private void displayServices() {
-        Cursor cursor = MainActivity.database.GetData(
-                "SELECT * FROM Services ");
-        serviceArrayList.clear();
-        while (cursor.moveToNext())
-        {
-            int id = cursor.getInt(0);
-            String name = cursor.getString(1);
-            String cost = cursor.getString(2);
-            String note = cursor.getString(3);
 
-            serviceArrayList.add(new Service(id,name,cost,note));
-        }
-        servicesAdapter.notifyDataSetChanged();
-    }
-
-    private void initiation() {
+    private void init() {
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,42 +94,39 @@ public class ServicesSystem extends AppCompatActivity {
             }
         });
     }
-    public void dialogShowNote(String note)
-    {
-        Dialog dialogShowNote = new Dialog(ServicesSystem.this);
-        dialogShowNote.setContentView(R.layout.dialog_show_note);
-        dialogShowNote.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        TextView txtShowNote    = (TextView) dialogShowNote.findViewById(R.id.txtShowNote);
-        Button btnOKNote    = (Button) dialogShowNote.findViewById(R.id.btnOKNote);
 
-        txtShowNote.setText(note);
-        btnOKNote.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogShowNote.dismiss();
-            }
-        });
-        dialogShowNote.show();
-    }
-    public void dialogUpdateService(int id, String name, String price, String note)
+    public void dialogUpdateService(Service service)
     {
         Dialog dialog_update = new Dialog(ServicesSystem.this);
         dialog_update.setContentView(R.layout.dialog_add_update_services);
         dialog_update.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        txtTitleService = (TextView) dialog_update.findViewById(R.id.txtTitleService);
-        edtGetServiceName   = (EditText) dialog_update.findViewById(R.id.edtGetServiceName);
-        edtGetServicePrice   = (EditText) dialog_update.findViewById(R.id.edtGetServicePrice);
-        edtGetServiceNote   = (EditText) dialog_update.findViewById(R.id.edtGetServiceNote);
+        txtTitleService = dialog_update.findViewById(R.id.txtTitleService);
+        textInputEdt_getServiceName   = dialog_update.findViewById(R.id.textInputEdt_getServiceName);
+        textInputEdt_getServicePrice  = dialog_update.findViewById(R.id.textInputEdt_getServicePrice);
+        textInputEdt_getServiceUnit   = dialog_update.findViewById(R.id.textInputEdt_getServiceUnit);
 
-        edtGetServiceName.setText(name);
-        edtGetServicePrice.setText(price);
-        edtGetServiceNote.setText(note);
+        textInputEdt_getServiceName.setText(service.getName());
+        textInputEdt_getServiceUnit.setText(service.getUnit());
+
+        formatMoneyType(textInputEdt_getServicePrice);
+
+        /**
+         * Format cost lấy về từ firebase
+         * theo định dạng money
+         * */
+        DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+        formatter.applyPattern("#,###,###,###");
+        Double cost = Double.parseDouble(service.getPrice());
+        textInputEdt_getServicePrice.setText(formatter.format(cost));
 
         txtTitleService.setText(R.string.serciesSystem_update_title);
         Button btnService   = (Button) dialog_update.findViewById(R.id.btnService);
         Button btnCancel   = (Button) dialog_update.findViewById(R.id.btnCancel);
+
+
+
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -125,16 +138,27 @@ public class ServicesSystem extends AppCompatActivity {
         btnService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = edtGetServiceName.getText().toString().trim();
-                String price = edtGetServicePrice.getText().toString().trim();
-                String note = edtGetServiceNote.getText().toString().trim();
+                String serviceName = textInputEdt_getServiceName.getText().toString().trim();
+                String servicePrice = textInputEdt_getServicePrice.getText().toString().trim();
+                String serviceUnit = textInputEdt_getServiceUnit.getText().toString().trim();
+
+                if (serviceName.equals("") || servicePrice.equals("") || serviceUnit.equals(""))
+                {
+                    Toast.makeText(ServicesSystem.this, "Error : Điền đầy đủ thông tin !", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                /**
+                 * Chuyển Money Type về integer để insert vào database
+                 * và thực hiện tính toán.
+                 * */
+                if (servicePrice.contains(","))
+                    servicePrice = servicePrice.replaceAll(",","");
 
 
-                MainActivity.database.QueryDate("UPDATE Services SET servicesName = '" + name + "'" +
-                        ", servicesCost = '" + price  + "' , servicesNote = '" + note +
-                        "'  WHERE servicesId = '" + id + "' ");
+                Service updateService = new Service(service.getId(), serviceName, servicePrice, serviceUnit);
 
-                Toast.makeText(getApplicationContext(),"Update Successful ! " ,Toast.LENGTH_LONG).show();
+                myRef.child("services").child(firebaseUser.getUid()).child(String.valueOf(service.getId())).setValue(updateService);
+
                 displayServices();
                 dialog_update.dismiss();
             }
@@ -143,20 +167,21 @@ public class ServicesSystem extends AppCompatActivity {
 
 
     }
-    public void dialogDeleteService(int id)
+    public void dialogDeleteService(Service service)
     {
         Dialog dialog_delete = new Dialog(ServicesSystem.this);
         dialog_delete.setContentView(R.layout.dialog_detele);
         dialog_delete.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
+        String serviceId = service.getId() + "";
         Button btnYes               = (Button) dialog_delete.findViewById(R.id.btn_allow_delete);
         Button btnNo                = (Button) dialog_delete.findViewById(R.id.btn_cancel_delete);
         btnYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.database.QueryDate("DELETE FROM Services WHERE servicesId = '" + id + "'");
 
-                Toast.makeText(ServicesSystem.this,"Delete Successful ! ",Toast.LENGTH_SHORT).show();
+                myRef.child("services").child(firebaseUser.getUid()).child(serviceId).removeValue();
+
                 displayServices();
                 dialog_delete.dismiss();
             }
@@ -175,21 +200,49 @@ public class ServicesSystem extends AppCompatActivity {
         dialog.setContentView(R.layout.dialog_add_update_services);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        edtGetServiceName   = (EditText) dialog.findViewById(R.id.edtGetServiceName);
-        edtGetServicePrice   = (EditText) dialog.findViewById(R.id.edtGetServicePrice);
-        edtGetServiceNote   = (EditText) dialog.findViewById(R.id.edtGetServiceNote);
+        textInputEdt_getServiceName   =  dialog.findViewById(R.id.textInputEdt_getServiceName);
+        textInputEdt_getServicePrice   = dialog.findViewById(R.id.textInputEdt_getServicePrice);
+        textInputEdt_getServiceUnit   =  dialog.findViewById(R.id.textInputEdt_getServiceUnit);
+
 
         Button btnService   = (Button) dialog.findViewById(R.id.btnService);
         Button btnCancel   = (Button) dialog.findViewById(R.id.btnCancel);
 
+        formatMoneyType(textInputEdt_getServicePrice);
+
+
         btnService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String serviceName = edtGetServiceName.getText().toString().trim();
-                String servicePrice = edtGetServicePrice.getText().toString().trim();
-                String serviceNote = edtGetServiceNote.getText().toString().trim();
+                String serviceName = textInputEdt_getServiceName.getText().toString().trim();
+                String servicePrice = textInputEdt_getServicePrice.getText().toString().trim();
+                String serviceUnit = textInputEdt_getServiceUnit.getText().toString().trim();
 
-                MainActivity.database.INSERT_SERVICES(serviceName,servicePrice,serviceNote);
+                if (serviceName.equals("") || servicePrice.equals("") || serviceUnit.equals(""))
+                {
+                    Toast.makeText(ServicesSystem.this, "Error : Điền đầy đủ thông tin !", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                /**
+                 * Chuyển Money Type về integer để insert vào database
+                 * và thực hiện tính toán.
+                 * */
+                if (servicePrice.contains(","))
+                    servicePrice = servicePrice.replaceAll(",","");
+
+                // Get current Datetime
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+                String currentDateAndTime = sdf.format(new Date());
+
+
+                int currentTotalServices = serviceList.size();
+                int nextServicesId = currentTotalServices + 1;
+                String servicesId = nextServicesId + "_" + currentDateAndTime;
+
+                Service service = new Service(servicesId, serviceName, servicePrice, serviceUnit);
+
+                myRef.child("services").child(firebaseUser.getUid()).child(servicesId).setValue(service);
+
                 displayServices();
                 dialog.dismiss();
             }
@@ -207,11 +260,83 @@ public class ServicesSystem extends AppCompatActivity {
         dialog.show();
     }
 
-    private void mapting() {
-        imgAddServices  = (ImageView) findViewById(R.id.imgAddServices);
-        imgBack  = (ImageView) findViewById(R.id.imgBack);
 
-        lvServices  = (ListView) findViewById(R.id.lvServices);
+    public void formatMoneyType(EditText edtCostInput)
+    {
+        edtCostInput.addTextChangedListener( new TextWatcher() {
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override public void afterTextChanged(Editable s) {
+                edtCostInput.removeTextChangedListener(this);
+
+                try {
+                    String originalString = s.toString();
+
+                    double doubleVal;
+
+                    /**
+                     * Kiếm tra xem data users nhập vào đã chứa "," chưa ?
+                     * Nếu có thì sẽ thay thế = ""
+                     * */
+                    if (originalString.contains(","))
+                        originalString = originalString.replaceAll(",","");
+
+                    doubleVal = Double.parseDouble(originalString);
+
+
+                    DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+                    formatter.applyPattern("#,###,###,###");
+                    String formattedString = formatter.format(doubleVal);
+
+                    //setting text after format to EditText
+                    edtCostInput.setText(formattedString);
+                    edtCostInput.setSelection(edtCostInput.getText().length());
+
+                }
+                catch (NumberFormatException e)
+                {
+                    e.printStackTrace();
+                }
+
+                edtCostInput.addTextChangedListener(this);
+
+            }
+        });
+    }
+
+    private void displayServices() {
+        serviceList.clear();
+
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    Service service =dataSnapshot.getValue(Service.class);
+
+                    serviceList.add(0,service);
+
+                }
+
+                adapterServices.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        Query query = myRef.child("services").child(firebaseUser.getUid());
+        query.addListenerForSingleValueEvent(valueEventListener);
+    }
+
+    private void mapting() {
+        imgAddServices  = findViewById(R.id.imgAddServices);
+        imgBack  = findViewById(R.id.imgBack);
+
+        rcv_services  = findViewById(R.id.rcv_services);
 
     }
 }
