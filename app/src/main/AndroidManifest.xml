@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.nda.quanlyphongtro_free">
 
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -18,11 +18,11 @@
         android:roundIcon="@mipmap/app_logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.QuanLyPhongTro_FREE">
-        <activity android:name=".Rooms.Payment.PaymentSystem"/>
         <activity
-            android:name=".Setting.Billing.Billing"/>
-        <activity
-            android:name=".Setting.Setting"/>
+            android:name=".Houses.AddHouse.AddHouse"/>
+        <activity android:name=".Rooms.Payment.PaymentSystem" />
+        <activity android:name=".Setting.Billing.Billing" />
+        <activity android:name=".Setting.Setting" />
         <activity
             android:name=".Contract.ContractSystem"
             android:windowSoftInputMode="adjustPan" />
@@ -32,7 +32,6 @@
         <activity
             android:name=".Services.ServicesSystem"
             android:windowSoftInputMode="adjustPan" />
-
         <activity
             android:name=".Tenants.TenantsSystem"
             android:windowSoftInputMode="adjustPan" />
@@ -42,8 +41,8 @@
         <activity
             android:name=".Houses.HousesSystem"
             android:windowSoftInputMode="adjustPan" />
-
-        <activity android:name=".LoginSignUpActivity"
+        <activity
+            android:name=".LoginSignUpActivity"
             android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,15 +50,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity">
-
-        </activity>
+        <activity android:name=".MainActivity"></activity>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
     </application>
 
 </manifest>

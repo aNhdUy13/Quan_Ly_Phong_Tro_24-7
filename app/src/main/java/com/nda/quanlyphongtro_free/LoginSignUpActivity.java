@@ -220,13 +220,13 @@ public class LoginSignUpActivity extends AppCompatActivity {
 
 
                             // Add information of SERVICE to realtime firebase
-                            Service service1 = new Service(1 + "_" + currentDateAndTime, "Điện", "3500", "Kwh");
-                            Service service2 = new Service(2 + "_" + currentDateAndTime, "Nước", "20000", "Tháng");
-                            Service service3 = new Service(3 + "_" + currentDateAndTime, "Wifi", "50000", "Tháng");
-                            Service service4 = new Service(4 + "_" + currentDateAndTime, "Bảo Vệ", "10000", "Tháng");
-                            Service service5 = new Service(5 + "_" + currentDateAndTime, "Giữ Xe", "120000", "Tháng");
-                            Service service6 = new Service(6 + "_" + currentDateAndTime, "Vệ Sinh Chung", "47000", "Tháng");
-                            Service service7 = new Service(7 + "_" + currentDateAndTime, "Rác", "6000", "Tháng");
+                            Service service1 = new Service(1 + "_" + currentDateAndTime, "Điện", "3500", "Kwh", false);
+                            Service service2 = new Service(2 + "_" + currentDateAndTime, "Nước", "20000", "Tháng", false);
+                            Service service3 = new Service(3 + "_" + currentDateAndTime, "Wifi", "50000", "Tháng", false);
+                            Service service4 = new Service(4 + "_" + currentDateAndTime, "Bảo Vệ", "10000", "Tháng", false);
+                            Service service5 = new Service(5 + "_" + currentDateAndTime, "Giữ Xe", "120000", "Tháng", false);
+                            Service service6 = new Service(6 + "_" + currentDateAndTime, "Vệ Sinh Chung", "47000", "Tháng", false);
+                            Service service7 = new Service(7 + "_" + currentDateAndTime, "Rác", "6000", "Tháng", false);
 
                             myRef.child("services").child(firebaseUser.getUid()).child("1_"+ currentDateAndTime).setValue(service1);
                             myRef.child("services").child(firebaseUser.getUid()).child("2_"+ currentDateAndTime).setValue(service2);

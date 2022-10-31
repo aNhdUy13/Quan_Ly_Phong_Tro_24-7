@@ -155,7 +155,7 @@ public class ServicesSystem extends AppCompatActivity {
                     servicePrice = servicePrice.replaceAll(",","");
 
 
-                Service updateService = new Service(service.getId(), serviceName, servicePrice, serviceUnit);
+                Service updateService = new Service(service.getId(), serviceName, servicePrice, serviceUnit, service.isDelete());
 
                 myRef.child("services").child(firebaseUser.getUid()).child(String.valueOf(service.getId())).setValue(updateService);
 
@@ -239,7 +239,7 @@ public class ServicesSystem extends AppCompatActivity {
                 int nextServicesId = currentTotalServices + 1;
                 String servicesId = nextServicesId + "_" + currentDateAndTime;
 
-                Service service = new Service(servicesId, serviceName, servicePrice, serviceUnit);
+                Service service = new Service(servicesId, serviceName, servicePrice, serviceUnit, true);
 
                 myRef.child("services").child(firebaseUser.getUid()).child(servicesId).setValue(service);
 

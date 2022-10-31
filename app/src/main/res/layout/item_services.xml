@@ -10,7 +10,7 @@
 
     <ImageView
         android:id="@+id/img_service"
-        android:src="@drawable/ic_electricity"
+        android:src="@drawable/ic_teamwork"
         android:layout_width="30dp"
         android:layout_height="30dp"/>
     <TextView

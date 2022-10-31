@@ -3,20 +3,30 @@ package com.nda.quanlyphongtro_free.Model;
 public class Service {
     private String id;
     private String name, price, unit;
+    private boolean isDelete;
 
     public Service(){}
 
-    public Service(String id, String name, String price, String unit) {
+    public Service(String id, String name, String price, String unit, boolean isDelete) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.unit = unit;
+        this.isDelete = isDelete;
     }
 
     public String getId() {
         return id;
     }
 
+
+    public boolean isDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(boolean delete) {
+        isDelete = delete;
+    }
 
     public String getName() {
         return name;

@@ -1,6 +1,7 @@
 package com.nda.quanlyphongtro_free.Services;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -52,6 +54,10 @@ public class AdapterServices extends RecyclerView.Adapter<AdapterServices.Holder
         Double cost = Double.parseDouble(service.getPrice());
         holder.txtServicesCost.setText(formatter.format(cost) + " đ/" + service.getUnit());
 
+        String serviceId = service.getId();
+        String splitServiceId[] = serviceId.split("_");
+        imageAdap(splitServiceId[0], holder.img_service);
+
         holder.ll_serviceItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,7 +68,13 @@ public class AdapterServices extends RecyclerView.Adapter<AdapterServices.Holder
         holder.ll_serviceItem.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                context.dialogDeleteService(service);
+                if (service.isDelete() == true)
+                {
+                    context.dialogDeleteService(service);
+                }
+                else {
+                    Toast.makeText(context, "Warning : Không thể xóa DỊCH VỤ mặc định !", Toast.LENGTH_LONG).show();
+                }
                 return true;
             }
         });
@@ -90,6 +102,51 @@ public class AdapterServices extends RecyclerView.Adapter<AdapterServices.Holder
             txtServicesCost = itemView.findViewById(R.id.txtServicesCost);
 
         }
+    }
+
+    private void imageAdap(String signal,  ImageView imgShow) {
+        // Set default image
+        imgShow.setImageResource(R.drawable.ic_teamwork);
+
+        // Check and assign between image and signal
+        if (signal.equals("1"))
+        {
+            imgShow.setImageResource(R.drawable.ic_electricity);
+
+        }
+        if (signal.equals("2"))
+        {
+            imgShow.setImageResource(R.drawable.ic_water);
+
+        }
+
+        if (signal.equals("3"))
+        {
+            imgShow.setImageResource(R.drawable.ic_wifi);
+
+        }
+        if (signal.equals("4"))
+        {
+            imgShow.setImageResource(R.drawable.ic_security);
+
+        }
+        if (signal.equals("5"))
+        {
+            imgShow.setImageResource(R.drawable.ic_parking_space);
+
+        }
+
+        if (signal.equals("6"))
+        {
+            imgShow.setImageResource(R.drawable.ic_sanitation);
+
+        }
+        if (signal.equals("7"))
+        {
+            imgShow.setImageResource(R.drawable.ic_trash);
+
+        }
+
     }
 
 

@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nda.quanlyphongtro_free.Houses.AddHouse.AddHouse;
 import com.nda.quanlyphongtro_free.MainActivity;
 import com.nda.quanlyphongtro_free.R;
 import com.nda.quanlyphongtro_free.Rooms.RoomsSystem;
@@ -82,7 +83,7 @@ public class HousesSystem extends AppCompatActivity {
         imgAddHouses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialogAddHouses();
+                startActivity(new Intent(HousesSystem.this, AddHouse.class));
 
             }
         });

@@ -48,7 +48,7 @@
                     android:id="@+id/txtTitleService"
                     android:layout_marginLeft="15dp"
                     android:textSize="15dp"
-                    android:text="@string/serciesSystem_services_title"
+                    android:text="Quản Lý Dịch Vụ"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:gravity="center"
@@ -59,6 +59,18 @@
         </LinearLayout>
 
 
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchView_service"
+            app:queryBackground="@null"
+            app:submitBackground="@null"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            app:defaultQueryHint="Search Planning Items"
+            android:background="@drawable/shape_search_view"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"/>
         <LinearLayout
             android:id="@+id/roomContent"
             android:layout_width="match_parent"
