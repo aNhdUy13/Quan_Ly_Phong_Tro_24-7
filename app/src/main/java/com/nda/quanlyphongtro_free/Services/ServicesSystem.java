@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -48,6 +49,8 @@ public class ServicesSystem extends AppCompatActivity {
     FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();;
 
 
+    ShimmerFrameLayout shimmer_view_container;
+
     ImageView imgAddServices,imgBack;
     TextInputEditText textInputEdt_getServiceName,textInputEdt_getServicePrice,textInputEdt_getServiceUnit;
 
@@ -56,11 +59,14 @@ public class ServicesSystem extends AppCompatActivity {
     List<Service> serviceList = new ArrayList<>();
 
     TextView txtTitleService;
+
+    androidx.appcompat.widget.SearchView searchView_service;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_services_system);
-        mapting();
+        initUI();
         setRCV();
 
         init();
@@ -332,11 +338,54 @@ public class ServicesSystem extends AppCompatActivity {
         query.addListenerForSingleValueEvent(valueEventListener);
     }
 
-    private void mapting() {
+    @Override
+    protected void onStart() {
+        // Hide all function field and show shimmer effect
+        searchView_service.setVisibility(View.GONE);
+        rcv_services.setVisibility(View.GONE);
+        imgAddServices.setVisibility(View.GONE);
+        shimmer_view_container.setVisibility(View.VISIBLE);
+        shimmer_view_container.startShimmerAnimation();
+
+        // Get available data from firebase then add to the list
+        serviceList.clear();
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    Service service =dataSnapshot.getValue(Service.class);
+                    serviceList.add(0,service);
+                }
+                adapterServices.notifyDataSetChanged();
+
+
+                // When get data successfully, hide the shimmer and show all function field
+                searchView_service.setVisibility(View.VISIBLE);
+                rcv_services.setVisibility(View.VISIBLE);
+                imgAddServices.setVisibility(View.VISIBLE);
+                shimmer_view_container.setVisibility(View.GONE);
+                shimmer_view_container.stopShimmerAnimation();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        Query query = myRef.child("services").child(firebaseUser.getUid());
+        query.addListenerForSingleValueEvent(valueEventListener);
+
+        super.onStart();
+
+    }
+
+    private void initUI() {
         imgAddServices  = findViewById(R.id.imgAddServices);
-        imgBack  = findViewById(R.id.imgBack);
+        imgBack         = findViewById(R.id.imgBack);
 
-        rcv_services  = findViewById(R.id.rcv_services);
+        rcv_services        = findViewById(R.id.rcv_services);
+        searchView_service  = findViewById(R.id.searchView_service);
 
+        shimmer_view_container = findViewById(R.id.shimmer_view_container);
     }
 }
