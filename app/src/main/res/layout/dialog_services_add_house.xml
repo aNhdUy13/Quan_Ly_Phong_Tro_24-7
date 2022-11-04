@@ -31,7 +31,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textColor="@color/black"
-                    android:text="Chọn Tỉnh/Thành phố"
+                    android:text="Chọn dịch vụ"
                     android:textSize="15dp" />
 
 
@@ -47,39 +47,15 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1.5">
-
-                <androidx.appcompat.widget.SearchView
-                    android:id="@+id/searchView_service"
-                    app:queryBackground="@null"
-                    app:submitBackground="@null"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    app:defaultQueryHint="Search Planning Items"
-                    android:background="@drawable/shape_search_view"
-                    app:queryHint="Tìm Kiếm ..."
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"/>
-
-
-
-            </LinearLayout>
-
 
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="7">
+                android:layout_weight="8.5">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rcv_stateCitySelection"
+                    android:id="@+id/rcv_showServices"
                     android:padding="15dp"
 
                     android:overScrollMode="never"

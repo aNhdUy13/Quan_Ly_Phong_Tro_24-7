@@ -13,13 +13,13 @@ import com.nda.quanlyphongtro_free.R;
 
 import java.util.List;
 
-public class AdapterAddHouse extends RecyclerView.Adapter<AdapterAddHouse.HolderAddHouse> {
+public class AdapterSelectCityState extends RecyclerView.Adapter<AdapterSelectCityState.HolderAddHouse> {
     AddHouse context;
     List<String> stringList;
     Dialog dialog;
     TextView txt_selectThanhPho;
 
-    public AdapterAddHouse(AddHouse context, List<String> stringList, Dialog dialog, TextView txt_selectThanhPho) {
+    public AdapterSelectCityState(AddHouse context, List<String> stringList, Dialog dialog, TextView txt_selectThanhPho) {
         this.context = context;
         this.stringList = stringList;
         this.dialog = dialog;

@@ -57,18 +57,18 @@ public class HousesSystem extends AppCompatActivity {
     }
 
     private void displayAvailableHOuses() {
-        Cursor cursor = MainActivity.database.GetData(
-                "SELECT * FROM Houses ");
-        housesArrayList.clear();
-        while (cursor.moveToNext())
-        {
-            int id = cursor.getInt(0);
-            String housesName = cursor.getString(1);
-            String housesLocation = cursor.getString(2);
-
-            housesArrayList.add(new Houses(id,housesName,housesLocation));
-        }
-        housesAdapter.notifyDataSetChanged();
+//        Cursor cursor = MainActivity.database.GetData(
+//                "SELECT * FROM Houses ");
+//        housesArrayList.clear();
+//        while (cursor.moveToNext())
+//        {
+//            int id = cursor.getInt(0);
+//            String housesName = cursor.getString(1);
+//            String housesLocation = cursor.getString(2);
+//
+//            housesArrayList.add(new Houses(id,housesName,housesLocation));
+//        }
+//        housesAdapter.notifyDataSetChanged();
     }
 
     private void initiation() {
