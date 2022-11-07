@@ -149,7 +149,7 @@
                             android:inputType="number"
 
 
-                            android:hint="Chi phí thuê nhà (*)">
+                            android:hint="Chi phí thuê nhà">
 
                         </com.google.android.material.textfield.TextInputEditText>
 

@@ -13,18 +13,17 @@ import com.nda.quanlyphongtro_free.R;
 
 import java.util.List;
 
-public class AdapterSelectCityState extends RecyclerView.Adapter<AdapterSelectCityState.HolderAddHouse> {
+public class AdapterSelectDistrict extends RecyclerView.Adapter<AdapterSelectDistrict.HolderAddHouse> {
     AddHouse context;
     List<String> stringList;
     Dialog dialog;
-    TextView txt_selectThanhPho, txt_selectQuanHuyen;
+    TextView txt_selectQuanHuyen;
 
-    public AdapterSelectCityState(AddHouse context, List<String> stringList, Dialog dialog, TextView txt_selectThanhPho,
-                                  TextView txt_selectQuanHuyen) {
+    public AdapterSelectDistrict(AddHouse context, List<String> stringList, Dialog dialog,
+                                 TextView txt_selectQuanHuyen) {
         this.context = context;
         this.stringList = stringList;
         this.dialog = dialog;
-        this.txt_selectThanhPho = txt_selectThanhPho;
         this.txt_selectQuanHuyen = txt_selectQuanHuyen;
     }
 
@@ -44,8 +43,7 @@ public class AdapterSelectCityState extends RecyclerView.Adapter<AdapterSelectCi
         holder.txt_simpleStringItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                txt_selectThanhPho.setText(str);
-                txt_selectQuanHuyen.setText("");
+                txt_selectQuanHuyen.setText(str);
                 dialog.dismiss();
             }
         });

@@ -326,6 +326,15 @@ public class ServicesSystem extends AppCompatActivity {
                 }
 
                 adapterServices.notifyDataSetChanged();
+
+
+
+                // When get data successfully, hide the shimmer and show all function field
+                searchView_service.setVisibility(View.VISIBLE);
+                rcv_services.setVisibility(View.VISIBLE);
+                imgAddServices.setVisibility(View.VISIBLE);
+                shimmer_view_container.setVisibility(View.GONE);
+                shimmer_view_container.stopShimmerAnimation();
             }
 
             @Override
@@ -347,33 +356,7 @@ public class ServicesSystem extends AppCompatActivity {
         shimmer_view_container.setVisibility(View.VISIBLE);
         shimmer_view_container.startShimmerAnimation();
 
-        // Get available data from firebase then add to the list
-        serviceList.clear();
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot : snapshot.getChildren())
-                {
-                    Service service =dataSnapshot.getValue(Service.class);
-                    serviceList.add(0,service);
-                }
-                adapterServices.notifyDataSetChanged();
-
-
-                // When get data successfully, hide the shimmer and show all function field
-                searchView_service.setVisibility(View.VISIBLE);
-                rcv_services.setVisibility(View.VISIBLE);
-                imgAddServices.setVisibility(View.VISIBLE);
-                shimmer_view_container.setVisibility(View.GONE);
-                shimmer_view_container.stopShimmerAnimation();
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        };
-        Query query = myRef.child("services").child(firebaseUser.getUid());
-        query.addListenerForSingleValueEvent(valueEventListener);
+        //displayServices();
 
         super.onStart();
 

@@ -7,11 +7,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -26,11 +30,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.nda.quanlyphongtro_free.Houses.HousesSystem;
 import com.nda.quanlyphongtro_free.Model.Houses;
 import com.nda.quanlyphongtro_free.Model.Service;
 import com.nda.quanlyphongtro_free.R;
 import com.nda.quanlyphongtro_free.Services.ServicesSystem;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -71,6 +78,7 @@ public class AddHouse extends AppCompatActivity {
     }
     private void init()
     {
+        formatMoneyType(textInputEdt_getPhiThueNha);
 
         img_addHouse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +111,7 @@ public class AddHouse extends AppCompatActivity {
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                startActivity(new Intent(AddHouse.this, HousesSystem.class));
                 AddHouse.this.finish();
             }
         });
@@ -132,11 +140,6 @@ public class AddHouse extends AppCompatActivity {
         else if(soTang.equals(""))
         {
             Toast.makeText(this, "Error : Điền số tầng !", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        else if(phiThueNha.equals(""))
-        {
-            Toast.makeText(this, "Error : Điền phí thuê nhà !", Toast.LENGTH_SHORT).show();
             return;
         }
         else if(diaChi.equals(""))
@@ -170,13 +173,58 @@ public class AddHouse extends AppCompatActivity {
                 strQuanHuyen, checkedServiceList, strGioMoCua,strGioDongCua, baoTruocNgayChuyen,
                 ghiChu);
 
+        // myRef.child("houses").child(firebaseUser.getUid()).child(strTinhThanhPho).child(houseId).setValue(houses);
         myRef.child("houses").child(firebaseUser.getUid()).child(houseId).setValue(houses);
 
         Toast.makeText(this, "Thêm nhà Thành Công !", Toast.LENGTH_SHORT).show();
 
+        startActivity(new Intent(AddHouse.this, HousesSystem.class));
     }
 
 
+    public void formatMoneyType(EditText edtCostInput)
+    {
+        edtCostInput.addTextChangedListener( new TextWatcher() {
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override public void afterTextChanged(Editable s) {
+                edtCostInput.removeTextChangedListener(this);
+
+                try {
+                    String originalString = s.toString();
+
+                    double doubleVal;
+
+                    /**
+                     * Kiếm tra xem data users nhập vào đã chứa "," chưa ?
+                     * Nếu có thì sẽ thay thế = ""
+                     * */
+                    if (originalString.contains(","))
+                        originalString = originalString.replaceAll(",","");
+
+                    doubleVal = Double.parseDouble(originalString);
+
+
+                    DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+                    formatter.applyPattern("#,###,###,###");
+                    String formattedString = formatter.format(doubleVal);
+
+                    //setting text after format to EditText
+                    edtCostInput.setText(formattedString);
+                    edtCostInput.setSelection(edtCostInput.getText().length());
+
+                }
+                catch (NumberFormatException e)
+                {
+                    e.printStackTrace();
+                }
+
+                edtCostInput.addTextChangedListener(this);
+
+            }
+        });
+    }
 
     /*******************************************************
      *
@@ -310,8 +358,8 @@ public class AddHouse extends AppCompatActivity {
         androidx.appcompat.widget.SearchView  searchView_service = dialog.findViewById(R.id.searchView_service);
         RecyclerView rcv_stateCitySelection = dialog.findViewById(R.id.rcv_stateCitySelection);
 
-        AdapterSelectCityState adapterAddHouse = new AdapterSelectCityState(this, ListTinhThanhPhoVN.listTinhThanhPho, dialog,
-                txt_selectThanhPho);
+        AdapterSelectCityState adapterAddHouse = new AdapterSelectCityState(this, ListTinhThanhPhoVN.listTinhThanhPho,
+                dialog, txt_selectThanhPho, txt_selectQuanHuyen);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(AddHouse.this,RecyclerView.VERTICAL,false);
         rcv_stateCitySelection.setLayoutManager(linearLayoutManager);
         rcv_stateCitySelection.setAdapter(adapterAddHouse);
@@ -339,42 +387,42 @@ public class AddHouse extends AppCompatActivity {
 
 
         txtTitle_dialog_add_update.setText("Chọn Quận/Huyện");
-        AdapterSelectCityState adapterAddHouse = null;
+        AdapterSelectDistrict adapterAddHouse = null;
         String strThanhPho = txt_selectThanhPho.getText().toString().trim();
 
         // Set default list for adapter
-        adapterAddHouse = new AdapterSelectCityState(this, ListTinhThanhPhoVN.listQuanHuyen_HaNoi, dialog, txt_selectQuanHuyen);
+        adapterAddHouse = new AdapterSelectDistrict(this, ListTinhThanhPhoVN.listQuanHuyen_HaNoi, dialog, txt_selectQuanHuyen);
 
         if (strThanhPho.equals("Hà Nội"))
         {
-            adapterAddHouse = new AdapterSelectCityState(this, ListTinhThanhPhoVN.listQuanHuyen_HaNoi, dialog, txt_selectQuanHuyen);
+            adapterAddHouse = new AdapterSelectDistrict(this, ListTinhThanhPhoVN.listQuanHuyen_HaNoi, dialog, txt_selectQuanHuyen);
         }
         else if (strThanhPho.equals("Hà Giang")){
-            adapterAddHouse = new AdapterSelectCityState(this, ListTinhThanhPhoVN.listQuanHuyen_HaGiang, dialog, txt_selectQuanHuyen);
+            adapterAddHouse = new AdapterSelectDistrict(this, ListTinhThanhPhoVN.listQuanHuyen_HaGiang, dialog, txt_selectQuanHuyen);
         }
         else if (strThanhPho.equals("Cao Bằng")){
-            adapterAddHouse = new AdapterSelectCityState(this, ListTinhThanhPhoVN.listQuanHuyen_CaoBang, dialog, txt_selectQuanHuyen);
+            adapterAddHouse = new AdapterSelectDistrict(this, ListTinhThanhPhoVN.listQuanHuyen_CaoBang, dialog, txt_selectQuanHuyen);
         }
         else if (strThanhPho.equals("Bắc Kạn")){
-            adapterAddHouse = new AdapterSelectCityState(this, ListTinhThanhPhoVN.listQuanHuyen_BacKan, dialog, txt_selectQuanHuyen);
+            adapterAddHouse = new AdapterSelectDistrict(this, ListTinhThanhPhoVN.listQuanHuyen_BacKan, dialog, txt_selectQuanHuyen);
         }
         else if (strThanhPho.equals("Tuyên Quang")){
-            adapterAddHouse = new AdapterSelectCityState(this, ListTinhThanhPhoVN.listQuanHuyen_TuyenQuang, dialog, txt_selectQuanHuyen);
+            adapterAddHouse = new AdapterSelectDistrict(this, ListTinhThanhPhoVN.listQuanHuyen_TuyenQuang, dialog, txt_selectQuanHuyen);
         }
         else if (strThanhPho.equals("Lào Cai")){
-            adapterAddHouse = new AdapterSelectCityState(this, ListTinhThanhPhoVN.listQuanHuyen_LaoCai, dialog, txt_selectQuanHuyen);
+            adapterAddHouse = new AdapterSelectDistrict(this, ListTinhThanhPhoVN.listQuanHuyen_LaoCai, dialog, txt_selectQuanHuyen);
         }
         else if (strThanhPho.equals("Điện Biên")){
-            adapterAddHouse = new AdapterSelectCityState(this, ListTinhThanhPhoVN.listQuanHuyen_DienBien, dialog, txt_selectQuanHuyen);
+            adapterAddHouse = new AdapterSelectDistrict(this, ListTinhThanhPhoVN.listQuanHuyen_DienBien, dialog, txt_selectQuanHuyen);
         }
         else if (strThanhPho.equals("Lai Châu")){
-            adapterAddHouse = new AdapterSelectCityState(this, ListTinhThanhPhoVN.listQuanHuyen_LaiChau, dialog, txt_selectQuanHuyen);
+            adapterAddHouse = new AdapterSelectDistrict(this, ListTinhThanhPhoVN.listQuanHuyen_LaiChau, dialog, txt_selectQuanHuyen);
         }
         else if (strThanhPho.equals("Sơn La")){
-            adapterAddHouse = new AdapterSelectCityState(this, ListTinhThanhPhoVN.listQuanHuyen_SonLa, dialog, txt_selectQuanHuyen);
+            adapterAddHouse = new AdapterSelectDistrict(this, ListTinhThanhPhoVN.listQuanHuyen_SonLa, dialog, txt_selectQuanHuyen);
         }
         else if (strThanhPho.equals("Yên Bái")){
-            adapterAddHouse = new AdapterSelectCityState(this, ListTinhThanhPhoVN.listQuanHuyen_YenBai, dialog, txt_selectQuanHuyen);
+            adapterAddHouse = new AdapterSelectDistrict(this, ListTinhThanhPhoVN.listQuanHuyen_YenBai, dialog, txt_selectQuanHuyen);
         }
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(AddHouse.this,RecyclerView.VERTICAL,false);
         rcv_stateCitySelection.setLayoutManager(linearLayoutManager);
@@ -413,5 +461,12 @@ public class AddHouse extends AppCompatActivity {
         textInputEdt_getGhiChu              = findViewById(R.id.textInputEdt_getGhiChu);
 
         rcv_services    = findViewById(R.id.rcv_services);
+    }
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(AddHouse.this, HousesSystem.class));
+        AddHouse.this.finish();
+        super.onBackPressed();
     }
 }

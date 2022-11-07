@@ -1,4 +1,4 @@
-package com.nda.quanlyphongtro_free.Rooms;
+package com.nda.quanlyphongtro_free.Model;
 
 public class Rooms {
     private int id;

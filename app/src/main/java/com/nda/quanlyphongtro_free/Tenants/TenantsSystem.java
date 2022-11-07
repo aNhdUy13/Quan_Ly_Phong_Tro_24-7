@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,8 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.nda.quanlyphongtro_free.MainActivity;
 import com.nda.quanlyphongtro_free.R;
-import com.nda.quanlyphongtro_free.Rooms.Payment.PaymentSystem;
-import com.nda.quanlyphongtro_free.Rooms.RoomsSystem;
+import com.nda.quanlyphongtro_free.Houses.Rooms.Payment.PaymentSystem;
 
 import java.util.ArrayList;
 

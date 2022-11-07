@@ -1,15 +1,12 @@
-package com.nda.quanlyphongtro_free.Rooms.Payment;
+package com.nda.quanlyphongtro_free.Houses.Rooms.Payment;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
-import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,9 +18,6 @@ import android.widget.Toast;
 
 import com.nda.quanlyphongtro_free.MainActivity;
 import com.nda.quanlyphongtro_free.R;
-import com.nda.quanlyphongtro_free.Rooms.Rooms;
-import com.nda.quanlyphongtro_free.Rooms.RoomsSystem;
-import com.nda.quanlyphongtro_free.Tenants.TenantsSystem;
 
 import java.util.ArrayList;
 

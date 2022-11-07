@@ -1,8 +1,12 @@
 package com.nda.quanlyphongtro_free.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.List;
 
-public class Houses {
+public class Houses implements Parcelable {
     private String hId;
     private String hName, hFloorsNumber, hFee, hDescription, hAddress, hTinhThanhPho,
             hQuanHuyen,hOpenTime, hCloseTime, hBaoSoNgayChuyen, hNote;
@@ -27,6 +31,34 @@ public class Houses {
         this.hNote = hNote;
         this.serviceList = serviceList;
     }
+
+    // Related to Parcelable
+    protected Houses(Parcel in) {
+        hId = in.readString();
+        hName = in.readString();
+        hFloorsNumber = in.readString();
+        hFee = in.readString();
+        hDescription = in.readString();
+        hAddress = in.readString();
+        hTinhThanhPho = in.readString();
+        hQuanHuyen = in.readString();
+        hOpenTime = in.readString();
+        hCloseTime = in.readString();
+        hBaoSoNgayChuyen = in.readString();
+        hNote = in.readString();
+    }
+
+    public static final Creator<Houses> CREATOR = new Creator<Houses>() {
+        @Override
+        public Houses createFromParcel(Parcel in) {
+            return new Houses(in);
+        }
+
+        @Override
+        public Houses[] newArray(int size) {
+            return new Houses[size];
+        }
+    };
 
     public String gethId() {
         return hId;
@@ -126,5 +158,29 @@ public class Houses {
 
     public void setServiceList(List<Service> serviceList) {
         this.serviceList = serviceList;
+    }
+
+
+    // Related to Parcelable
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(hId);
+        parcel.writeString(hName);
+        parcel.writeString(hFloorsNumber);
+        parcel.writeString(hFee);
+        parcel.writeString(hDescription);
+        parcel.writeString(hAddress);
+        parcel.writeString(hTinhThanhPho);
+        parcel.writeString(hQuanHuyen);
+        parcel.writeString(hOpenTime);
+        parcel.writeString(hCloseTime);
+        parcel.writeString(hBaoSoNgayChuyen);
+        parcel.writeString(hNote);
     }
 }

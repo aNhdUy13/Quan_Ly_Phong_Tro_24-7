@@ -1,4 +1,4 @@
-package com.nda.quanlyphongtro_free.Rooms.Payment;
+package com.nda.quanlyphongtro_free.Houses.Rooms.Payment;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,12 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nda.quanlyphongtro_free.R;
-import com.nda.quanlyphongtro_free.Rooms.RoomAdapter;
-import com.nda.quanlyphongtro_free.Rooms.Rooms;
 
 import java.util.ArrayList;
 

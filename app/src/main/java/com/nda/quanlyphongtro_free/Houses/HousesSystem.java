@@ -1,81 +1,73 @@
 package com.nda.quanlyphongtro_free.Houses;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.nda.quanlyphongtro_free.Houses.AddHouse.AddHouse;
 import com.nda.quanlyphongtro_free.MainActivity;
+import com.nda.quanlyphongtro_free.Model.Houses;
 import com.nda.quanlyphongtro_free.R;
-import com.nda.quanlyphongtro_free.Rooms.RoomsSystem;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HousesSystem extends AppCompatActivity {
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef  = database.getReference();
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
     ImageView imgBack,imgAddHouses;
-    Button btnAddHouses, btnUpdateHouses;
-    EditText edtGetHousesName,edtGetHousesLocation;
-    ArrayList<Houses> housesArrayList;
-    HousesAdapter housesAdapter;
-    ListView lvHouses;
+    androidx.appcompat.widget.SearchView searchView_houses;
+
+    List<Houses> housesList = new ArrayList<>();
+    RecyclerView rcv_houses;
+    AdapterHouses adapterHouses;
+
+    ShimmerFrameLayout shimmer_view_container;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_houses_system);
-        mapting();
-        initiation();
-        setUpListView();
+
+        initUI();
+        init();
+        setUpRCV();
+    }
+    private void setUpRCV() {
+        adapterHouses = new AdapterHouses(HousesSystem.this, housesList);
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,
+                StaggeredGridLayoutManager.VERTICAL);
+
+        rcv_houses.setLayoutManager(staggeredGridLayoutManager);
+        rcv_houses.setAdapter(adapterHouses);
+
+        displayHouses();
     }
 
-    public void gotoRooms(int id, String houseName)
-    {
-        Intent intent = new Intent(HousesSystem.this, RoomsSystem.class);
-        intent.putExtra("house_id",id);
-        intent.putExtra("house_name",houseName);
-        startActivity(intent);
-
-    }
-    private void setUpListView() {
-        housesArrayList = new ArrayList<>();
-        housesAdapter =new HousesAdapter(this,R.layout.item_layout_houses,housesArrayList);
-        lvHouses.setAdapter(housesAdapter);
-        displayAvailableHOuses();
-
-    }
-
-    private void displayAvailableHOuses() {
-//        Cursor cursor = MainActivity.database.GetData(
-//                "SELECT * FROM Houses ");
-//        housesArrayList.clear();
-//        while (cursor.moveToNext())
-//        {
-//            int id = cursor.getInt(0);
-//            String housesName = cursor.getString(1);
-//            String housesLocation = cursor.getString(2);
-//
-//            housesArrayList.add(new Houses(id,housesName,housesLocation));
-//        }
-//        housesAdapter.notifyDataSetChanged();
-    }
-
-    private void initiation() {
+    private void init() {
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                startActivity(new Intent(HousesSystem.this, MainActivity.class));
 
             }
         });
@@ -89,127 +81,69 @@ public class HousesSystem extends AppCompatActivity {
         });
     }
 
-    private void dialogAddHouses() {
-        Dialog dialogAddHouses = new Dialog(HousesSystem.this);
-        dialogAddHouses.setContentView(R.layout.dialog_add_update_houses);
-        dialogAddHouses.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        btnAddHouses            = (Button) dialogAddHouses.findViewById(R.id.btnAddHouses);
-        edtGetHousesName        = (EditText) dialogAddHouses.findViewById(R.id.edtGetHousesName);
-        edtGetHousesLocation    = (EditText) dialogAddHouses.findViewById(R.id.edtGetHousesLocation);
-
-        Button  btnCancel  = (Button) dialogAddHouses.findViewById(R.id.btnCancel);
 
 
-        btnCancel.setOnClickListener(new View.OnClickListener() {
+    private void displayHouses() {
+        housesList.clear();
+
+        ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                dialogAddHouses.dismiss();
-            }
-        });
-
-        btnAddHouses.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String housesName       = edtGetHousesName.getText().toString().trim();
-                String housesLocation   = edtGetHousesLocation.getText().toString().trim();
-
-                if (housesName.isEmpty())
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren())
                 {
-                    edtGetHousesName.setError("Required !");
+                    Houses houses = dataSnapshot.getValue(Houses.class); // Snap Key here is City
+                    housesList.add(houses);
                 }
-                else
-                {
-                    MainActivity.database.INSERT_HOUSES(housesName,housesLocation);
-                    displayAvailableHOuses();
-                    dialogAddHouses.dismiss();
-                }
-            }
-        });
+                adapterHouses.notifyDataSetChanged();
 
-        dialogAddHouses.show();
+                // When get data successfully, hide the shimmer and show all function field
+                searchView_houses.setVisibility(View.VISIBLE);
+                rcv_houses.setVisibility(View.VISIBLE);
+                imgAddHouses.setVisibility(View.VISIBLE);
+                shimmer_view_container.setVisibility(View.GONE);
+                shimmer_view_container.stopShimmerAnimation();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        };
+        Query query = myRef.child("houses").child(firebaseUser.getUid());
+        query.addListenerForSingleValueEvent(valueEventListener);
 
     }
 
-    public void dialogUpdateHouses(int id, String houseName, String houseLocation) {
-        Dialog dialogUpdateHouses = new Dialog(HousesSystem.this);
-        dialogUpdateHouses.setContentView(R.layout.dialog_add_update_houses);
-        dialogUpdateHouses.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        btnUpdateHouses   = (Button) dialogUpdateHouses.findViewById(R.id.btnAddHouses);
-        edtGetHousesName        = (EditText) dialogUpdateHouses.findViewById(R.id.edtGetHousesName);
-        edtGetHousesLocation    = (EditText) dialogUpdateHouses.findViewById(R.id.edtGetHousesLocation);
-        TextView txtTitle_dialog_add_update = (TextView) dialogUpdateHouses.findViewById(R.id.txtTitle_dialog_add_update);
-        EditText edtGetHousesName   = (EditText) dialogUpdateHouses.findViewById(R.id.edtGetHousesName);
-        EditText edtGetHousesLocation   = (EditText) dialogUpdateHouses.findViewById(R.id.edtGetHousesLocation);
+    private void initUI() {
+        imgBack             =  findViewById(R.id.imgBack);
+        imgAddHouses        =  findViewById(R.id.imgAddHouses);
 
-        txtTitle_dialog_add_update.setText(R.string.housesSystem_update_layout_main_title);
-        btnUpdateHouses.setText(R.string.housesSystem_update_button);
+        searchView_houses   = findViewById(R.id.searchView_houses);
 
-        edtGetHousesName.setText(houseName);
-        edtGetHousesLocation.setText(houseLocation);
+        rcv_houses     = findViewById(R.id.rcv_houses);
 
-        Button  btnCancel  = (Button) dialogUpdateHouses.findViewById(R.id.btnCancel);
-
-
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogUpdateHouses.dismiss();
-            }
-        });
-        btnUpdateHouses.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String updateName       = edtGetHousesName.getText().toString().trim();
-                String updateLocation   = edtGetHousesLocation.getText().toString().trim();
-
-                MainActivity.database.QueryDate("UPDATE Houses SET houseName = '" + updateName + "'" +
-                        ", houseLocation = '" + updateLocation  + "'  WHERE housesId = '" + id + "' ");
-
-                Toast.makeText(getApplicationContext(),"Update Successful ! ",Toast.LENGTH_LONG).show();
-                displayAvailableHOuses();
-                dialogUpdateHouses.dismiss();
-            }
-        });
-
-        dialogUpdateHouses.show();
+        shimmer_view_container = findViewById(R.id.shimmer_view_container);
 
     }
 
-    public void dialogDelete(int id)
-    {
-        Dialog dialog_delete = new Dialog(HousesSystem.this);
-        dialog_delete.setContentView(R.layout.dialog_detele);
-        dialog_delete.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        Button btnYes               = (Button) dialog_delete.findViewById(R.id.btn_allow_delete);
-        Button btnNo                = (Button) dialog_delete.findViewById(R.id.btn_cancel_delete);
-        btnYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainActivity.database.QueryDate("DELETE FROM Houses WHERE housesId = '" + id + "'");
-                MainActivity.database.QueryDate("DELETE FROM Rooms WHERE housesId = '" + id + "'");
-                MainActivity.database.QueryDate("DELETE FROM Tenants WHERE housesId = '" + id + "'");
-                MainActivity.database.QueryDate("DELETE FROM Payments WHERE housesId = '" + id + "'");
 
-                Toast.makeText(HousesSystem.this,"Delete Successful ! ",Toast.LENGTH_LONG).show();
-                displayAvailableHOuses();
-                dialog_delete.dismiss();
-            }
-        });
-        btnNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog_delete.dismiss();
-            }
-        });
-        dialog_delete.show();
+    @Override
+    protected void onStart() {
+        // Hide all function field and show shimmer effect
+        searchView_houses.setVisibility(View.GONE);
+        rcv_houses.setVisibility(View.GONE);
+        imgAddHouses.setVisibility(View.GONE);
+        shimmer_view_container.setVisibility(View.VISIBLE);
+        shimmer_view_container.startShimmerAnimation();
+
+        super.onStart();
+
     }
-    private void mapting() {
-        imgBack      = (ImageView) findViewById(R.id.imgBack);
-        imgAddHouses = (ImageView) findViewById(R.id.imgAddHouses);
-        lvHouses     = (ListView) findViewById(R.id.lvHouses);
 
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(HousesSystem.this, MainActivity.class));
+        HousesSystem.this.finish();
+        super.onBackPressed();
     }
 }
