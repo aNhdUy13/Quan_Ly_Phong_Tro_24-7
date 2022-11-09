@@ -3,6 +3,7 @@ package com.nda.quanlyphongtro_free.Houses;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.nda.quanlyphongtro_free.Houses.Rooms.RoomsSystem;
 import com.nda.quanlyphongtro_free.Model.Houses;
+import com.nda.quanlyphongtro_free.Model.Service;
 import com.nda.quanlyphongtro_free.R;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class AdapterHouses extends RecyclerView.Adapter<AdapterHouses.HouseHolder> {
@@ -52,7 +55,6 @@ public class AdapterHouses extends RecyclerView.Adapter<AdapterHouses.HouseHolde
                 Intent intent = new Intent(context, RoomsSystem.class);
 
                 intent.putExtra("Data_House_Parcelable", houses);
-
                 context.startActivity(intent);
             }
         });

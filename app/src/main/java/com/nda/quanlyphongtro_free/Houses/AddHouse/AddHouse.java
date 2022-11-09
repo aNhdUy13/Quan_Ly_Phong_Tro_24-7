@@ -163,6 +163,14 @@ public class AddHouse extends AppCompatActivity {
             return;
         }
 
+        /**
+         * Chuyển Money Type về integer để insert vào database
+         * và thực hiện tính toán.
+         * */
+        if (phiThueNha.contains(","))
+            phiThueNha = phiThueNha.replaceAll(",","");
+
+
         // Get current Datetime
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
         String currentDateAndTime = sdf.format(new Date());

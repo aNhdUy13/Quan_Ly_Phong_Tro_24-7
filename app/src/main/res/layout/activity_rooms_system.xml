@@ -57,19 +57,97 @@
 
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/ll_danhSachPhong"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:gravity="center"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"
+                    android:text="Danh sách phòng"/>
+                <TextView
+                    android:id="@+id/txt_bgColor1"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="#4CAF50"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/ll_chiTietNha"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:gravity="center"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"
+                    android:text="Chi tiết nhà"/>
+                <TextView
+                    android:id="@+id/txt_bgColor2"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="#FFFFFF"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--
+            (CONTENT) Danh sách phòng
+        -->
+        <LinearLayout
+            android:id="@+id/ll_showDanhSachPhong"
+
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="9.3"
+
+            android:padding="10dp"
             android:orientation="vertical">
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rcv_rooms"
-                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
         </LinearLayout>
 
+
+        <!--
+            (CONTENT) Chi tiết nhà
+        -->
+        <LinearLayout
+            android:id="@+id/ll_showChiTietNha"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="9.3"
+            android:visibility="gone"
+
+            android:padding="10dp"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
 
     </LinearLayout>
 

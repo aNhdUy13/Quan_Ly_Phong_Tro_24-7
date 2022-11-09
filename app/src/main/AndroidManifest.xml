@@ -19,7 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuanLyPhongTro_FREE">
         <activity
-            android:name=".Houses.AddHouse.AddHouse"/>
+            android:name=".Houses.Rooms.AddRoom.AddRoom"/>
+        <activity android:name=".Houses.AddHouse.AddHouse" />
         <activity android:name=".Houses.Rooms.Payment.PaymentSystem" />
         <activity android:name=".Setting.Billing.Billing" />
         <activity android:name=".Setting.Setting" />
@@ -50,7 +51,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
