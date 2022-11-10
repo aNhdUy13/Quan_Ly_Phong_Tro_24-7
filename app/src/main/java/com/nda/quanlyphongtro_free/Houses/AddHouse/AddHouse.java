@@ -142,6 +142,11 @@ public class AddHouse extends AppCompatActivity {
             Toast.makeText(this, "Error : Điền số tầng !", Toast.LENGTH_SHORT).show();
             return;
         }
+        else if(Integer.parseInt(soTang) <=0)
+        {
+            Toast.makeText(this, "Error : Số tầng không hợp lệ !", Toast.LENGTH_SHORT).show();
+            return;
+        }
         else if(diaChi.equals(""))
         {
             Toast.makeText(this, "Error : Điền địa Chỉ !", Toast.LENGTH_SHORT).show();

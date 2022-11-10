@@ -234,7 +234,7 @@ public class AddRoom extends AppCompatActivity {
                 rArea, rLimitTenants, rDeposits, gender, checkedServiceList, rDescription, rNoteToTenants
                 );
 
-        myRef.child("rooms").child(firebaseUser.getUid()).child(roomId).setValue(rooms);
+        myRef.child("rooms").child(firebaseUser.getUid()).child(houses.gethId()).child(roomId).setValue(rooms);
 
         Toast.makeText(this, "Thêm phòng Thành Công !", Toast.LENGTH_SHORT).show();
 

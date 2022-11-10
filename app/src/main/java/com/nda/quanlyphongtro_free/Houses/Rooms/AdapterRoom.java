@@ -12,7 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.nda.quanlyphongtro_free.Model.Rooms;
 import com.nda.quanlyphongtro_free.R;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class AdapterRoom extends RecyclerView.Adapter<AdapterRoom.HolderRooms> {
     RoomsSystem context;
@@ -38,7 +41,15 @@ public class AdapterRoom extends RecyclerView.Adapter<AdapterRoom.HolderRooms> {
         holder.txt_roomName.setText(rooms.getrName());
         holder.txt_roomMembers.setText("Số người : 0/" + rooms.getrLimitTenants());
         holder.txt_roomFloor.setText("Tầng : " + rooms.getrFloorNumber());
-        holder.txt_roomFee.setText("Giá Phòng : " + rooms.getrPrice() + " đ");
+
+        /**
+         * Format cost lấy về từ firebase
+         * theo định dạng money
+         * */
+        DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+        formatter.applyPattern("#,###,###,###");
+        Double cost = Double.parseDouble(rooms.getrPrice());
+        holder.txt_roomFee.setText("Giá Phòng : " + formatter.format(cost) + " đ");
 
         holder.cv_roomItem.setOnClickListener(new View.OnClickListener() {
             @Override
