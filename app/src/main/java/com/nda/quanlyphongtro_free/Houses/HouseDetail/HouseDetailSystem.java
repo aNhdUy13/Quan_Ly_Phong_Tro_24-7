@@ -1,4 +1,4 @@
-package com.nda.quanlyphongtro_free.Houses.Rooms;
+package com.nda.quanlyphongtro_free.Houses.HouseDetail;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,7 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.nda.quanlyphongtro_free.Houses.HousesSystem;
-import com.nda.quanlyphongtro_free.Houses.Rooms.AddRoom.AddRoom;
+import com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.AddRoom.AddRoom;
 import com.nda.quanlyphongtro_free.MainActivity;
 import com.nda.quanlyphongtro_free.Model.Houses;
 import com.nda.quanlyphongtro_free.Model.Rooms;
@@ -39,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class RoomsSystem extends AppCompatActivity {
+public class HouseDetailSystem extends AppCompatActivity {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef  = database.getReference();
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -47,7 +46,7 @@ public class RoomsSystem extends AppCompatActivity {
 
     ShimmerFrameLayout shimmer_view_container;
 
-    ImageView imgBack,img_addRoom;
+    ImageView imgBack,img_addRoom, img_editHouse;
     TextView txt_houseName;
 
     LinearLayout ll_danhSachPhong, ll_chiTietNha, ll_showDanhSachPhong, ll_showChiTietNha, ll_optionHouse;
@@ -65,13 +64,13 @@ public class RoomsSystem extends AppCompatActivity {
     Button btn_deleteHouse;
 
     List<Service> serviceList = new ArrayList<>();
-    AdapterServiceInRoom adapterServiceInRoom;
-    RecyclerView rcv_servicesRoomDetail;
+    AdapterServiceOfHouse adapterServiceInHouse;
+    RecyclerView rcv_servicesHouseDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rooms_system);
+        setContentView(R.layout.activity_house_detail_system);
 
         initUI();
 
@@ -82,7 +81,7 @@ public class RoomsSystem extends AppCompatActivity {
 
 
     private void setupRCV() {
-        roomAdapter = new AdapterRoom(this,roomsList);
+        roomAdapter = new AdapterRoom(this,roomsList, houses);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(),
                 RecyclerView.VERTICAL,false);
@@ -100,7 +99,7 @@ public class RoomsSystem extends AppCompatActivity {
         img_addRoom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(RoomsSystem.this, AddRoom.class);
+                Intent intent = new Intent(HouseDetailSystem.this, AddRoom.class);
 
                 intent.putExtra("Data_House_Parcelable", houses);
                 startActivity(intent);
@@ -110,8 +109,8 @@ public class RoomsSystem extends AppCompatActivity {
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(RoomsSystem.this, HousesSystem.class));
-                RoomsSystem.this.finish();
+                startActivity(new Intent(HouseDetailSystem.this, HousesSystem.class));
+                HouseDetailSystem.this.finish();
             }
         });
 
@@ -142,6 +141,13 @@ public class RoomsSystem extends AppCompatActivity {
                 txt_bgColor1.setBackgroundColor(Color.parseColor("#FFFFFF"));
             }
         });
+
+        img_editHouse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
 
@@ -163,13 +169,6 @@ public class RoomsSystem extends AppCompatActivity {
 
                 roomAdapter.notifyDataSetChanged();
 
-                // When get data successfully, hide the shimmer and show all function field
-                searchView_searchRoom.setVisibility(View.VISIBLE);
-                rcv_rooms.setVisibility(View.VISIBLE);
-                img_addRoom.setVisibility(View.VISIBLE);
-                ll_optionHouse.setVisibility(View.VISIBLE);
-                shimmer_view_container.setVisibility(View.GONE);
-                shimmer_view_container.stopShimmerAnimation();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -239,11 +238,11 @@ public class RoomsSystem extends AppCompatActivity {
         txt_description.setText(houses.gethDescription());
         txt_note.setText(houses.gethNote());
 
-        adapterServiceInRoom = new AdapterServiceInRoom(this, serviceList);
+        adapterServiceInHouse = new AdapterServiceOfHouse(this, serviceList);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(),
                 RecyclerView.HORIZONTAL,false);
-        rcv_servicesRoomDetail.setLayoutManager(linearLayoutManager);
-        rcv_servicesRoomDetail.setAdapter(adapterServiceInRoom);
+        rcv_servicesHouseDetail.setLayoutManager(linearLayoutManager);
+        rcv_servicesHouseDetail.setAdapter(adapterServiceInHouse);
 
         displayServices();
     }
@@ -261,6 +260,14 @@ public class RoomsSystem extends AppCompatActivity {
                         serviceList.add(service);
                     }
 
+                    // When get data successfully, hide the shimmer and show all function field
+                    searchView_searchRoom.setVisibility(View.VISIBLE);
+                    rcv_rooms.setVisibility(View.VISIBLE);
+                    img_addRoom.setVisibility(View.VISIBLE);
+                    img_editHouse.setVisibility(View.VISIBLE);
+                    ll_optionHouse.setVisibility(View.VISIBLE);
+                    shimmer_view_container.setVisibility(View.GONE);
+                    shimmer_view_container.stopShimmerAnimation();
 
                 }
                 @Override
@@ -271,8 +278,8 @@ public class RoomsSystem extends AppCompatActivity {
             query.addListenerForSingleValueEvent(valueEventListener);
         } catch (Exception e)
         {
-            startActivity(new Intent(RoomsSystem.this, MainActivity.class));
-            RoomsSystem.this.finish();
+            startActivity(new Intent(HouseDetailSystem.this, MainActivity.class));
+            HouseDetailSystem.this.finish();
 
             Toast.makeText(this, "Warning : Kiểm tra đường truyền Internet !", Toast.LENGTH_SHORT).show();
 
@@ -286,6 +293,7 @@ public class RoomsSystem extends AppCompatActivity {
 
         imgBack         =  findViewById(R.id.imgBack);
         img_addRoom     =  findViewById(R.id.img_addRoom);
+        img_editHouse   = findViewById(R.id.img_editHouse);
 
         rcv_rooms     =  findViewById(R.id.rcv_rooms);
 
@@ -312,7 +320,7 @@ public class RoomsSystem extends AppCompatActivity {
         txt_description     =  findViewById(R.id.txt_description);
         txt_note     =  findViewById(R.id.txt_note);
 
-        rcv_servicesRoomDetail     =  findViewById(R.id.rcv_servicesRoomDetail);
+        rcv_servicesHouseDetail     =  findViewById(R.id.rcv_servicesHouseDetail);
 
         btn_deleteHouse = findViewById(R.id.btn_deleteHouse);
     }
@@ -320,8 +328,8 @@ public class RoomsSystem extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(RoomsSystem.this, HousesSystem.class));
-        RoomsSystem.this.finish();
+        startActivity(new Intent(HouseDetailSystem.this, HousesSystem.class));
+        HouseDetailSystem.this.finish();
 
         super.onBackPressed();
     }
@@ -332,6 +340,7 @@ public class RoomsSystem extends AppCompatActivity {
         searchView_searchRoom.setVisibility(View.GONE);
         rcv_rooms.setVisibility(View.GONE);
         img_addRoom.setVisibility(View.GONE);
+        img_editHouse.setVisibility(View.GONE);
         ll_optionHouse.setVisibility(View.GONE);
         shimmer_view_container.setVisibility(View.VISIBLE);
         shimmer_view_container.startShimmerAnimation();

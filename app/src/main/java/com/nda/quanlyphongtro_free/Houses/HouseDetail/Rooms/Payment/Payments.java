@@ -1,4 +1,4 @@
-package com.nda.quanlyphongtro_free.Houses.Rooms.Payment;
+package com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.Payment;
 
 public class Payments {
     private int paymentId;

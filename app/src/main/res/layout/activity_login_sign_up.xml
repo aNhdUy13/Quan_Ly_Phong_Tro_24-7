@@ -190,7 +190,7 @@
                                 android:textColor="#686868"
                                 android:layout_gravity="right"
                                 android:layout_marginTop="10dp"
-                                android:text="Quên mật khẩu" />
+                                android:text="Quên mật khẩu ?" />
                             <Button
                                 android:id="@+id/btn_login"
                                 android:layout_width="match_parent"

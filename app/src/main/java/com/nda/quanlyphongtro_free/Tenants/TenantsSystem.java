@@ -19,8 +19,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.nda.quanlyphongtro_free.MainActivity;
+import com.nda.quanlyphongtro_free.Model.Tenants;
 import com.nda.quanlyphongtro_free.R;
-import com.nda.quanlyphongtro_free.Houses.Rooms.Payment.PaymentSystem;
+import com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.Payment.PaymentSystem;
 
 import java.util.ArrayList;
 
@@ -142,7 +143,7 @@ public class TenantsSystem extends AppCompatActivity {
             String phoneNumber = cursor.getString(3);
             String note = cursor.getString(4);
 
-            tenantsArrayList.add(new Tenants(id,name,phoneNumber,note));
+            // tenantsArrayList.add(new Tenants(id,name,phoneNumber,note));
         }
         tenantsAdapter.notifyDataSetChanged();
     }

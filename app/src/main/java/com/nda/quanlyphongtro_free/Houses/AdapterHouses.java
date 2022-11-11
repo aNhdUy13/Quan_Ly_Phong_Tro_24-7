@@ -2,8 +2,6 @@ package com.nda.quanlyphongtro_free.Houses;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.nda.quanlyphongtro_free.Houses.Rooms.RoomsSystem;
+import com.nda.quanlyphongtro_free.Houses.HouseDetail.HouseDetailSystem;
 import com.nda.quanlyphongtro_free.Model.Houses;
-import com.nda.quanlyphongtro_free.Model.Service;
 import com.nda.quanlyphongtro_free.R;
 
-import java.io.Serializable;
 import java.util.List;
 
 public class AdapterHouses extends RecyclerView.Adapter<AdapterHouses.HouseHolder> {
@@ -52,7 +48,7 @@ public class AdapterHouses extends RecyclerView.Adapter<AdapterHouses.HouseHolde
         holder.cv_houseItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, RoomsSystem.class);
+                Intent intent = new Intent(context, HouseDetailSystem.class);
 
                 intent.putExtra("Data_House_Parcelable", houses);
                 context.startActivity(intent);

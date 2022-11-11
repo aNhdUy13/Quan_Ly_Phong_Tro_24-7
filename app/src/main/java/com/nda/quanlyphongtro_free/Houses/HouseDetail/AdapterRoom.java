@@ -1,5 +1,6 @@
-package com.nda.quanlyphongtro_free.Houses.Rooms;
+package com.nda.quanlyphongtro_free.Houses.HouseDetail;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail.RoomDetailSystem;
+import com.nda.quanlyphongtro_free.Model.Houses;
 import com.nda.quanlyphongtro_free.Model.Rooms;
 import com.nda.quanlyphongtro_free.R;
 
@@ -18,12 +21,14 @@ import java.util.List;
 import java.util.Locale;
 
 public class AdapterRoom extends RecyclerView.Adapter<AdapterRoom.HolderRooms> {
-    RoomsSystem context;
+    HouseDetailSystem context;
     List<Rooms> roomsList;
+    Houses houses;
 
-    public AdapterRoom(RoomsSystem context, List<Rooms> roomsList) {
+    public AdapterRoom(HouseDetailSystem context, List<Rooms> roomsList, Houses houses) {
         this.context = context;
         this.roomsList = roomsList;
+        this.houses = houses;
     }
 
     @NonNull
@@ -54,7 +59,12 @@ public class AdapterRoom extends RecyclerView.Adapter<AdapterRoom.HolderRooms> {
         holder.cv_roomItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(context, RoomDetailSystem.class);
 
+                intent.putExtra("Data_Room_Parcelable", rooms);
+                intent.putExtra("Data_RoomOfHouse_Parcelable", houses);
+
+                context.startActivity(intent);
             }
         });
     }

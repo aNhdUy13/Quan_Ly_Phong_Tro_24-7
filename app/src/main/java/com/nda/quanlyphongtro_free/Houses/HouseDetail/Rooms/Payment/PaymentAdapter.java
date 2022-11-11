@@ -1,4 +1,4 @@
-package com.nda.quanlyphongtro_free.Houses.Rooms.Payment;
+package com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.Payment;
 
 import android.content.Context;
 import android.view.LayoutInflater;

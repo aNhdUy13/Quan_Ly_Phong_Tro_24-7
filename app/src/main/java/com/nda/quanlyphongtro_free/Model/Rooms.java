@@ -1,8 +1,11 @@
 package com.nda.quanlyphongtro_free.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
-public class Rooms {
+public class Rooms implements Parcelable {
     private String id;
     private String rName,rPrice,rFloorNumber, rBedRoomNumber, rLivingRoomNumber, rArea,
                     rLimitTenants, rDeposit, rGender, rDescription, rNoteToTenant;
@@ -28,6 +31,33 @@ public class Rooms {
         this.rDescription = rDescription;
         this.rNoteToTenant = rNoteToTenant;
     }
+
+    protected Rooms(Parcel in) {
+        id = in.readString();
+        rName = in.readString();
+        rPrice = in.readString();
+        rFloorNumber = in.readString();
+        rBedRoomNumber = in.readString();
+        rLivingRoomNumber = in.readString();
+        rArea = in.readString();
+        rLimitTenants = in.readString();
+        rDeposit = in.readString();
+        rGender = in.readString();
+        rDescription = in.readString();
+        rNoteToTenant = in.readString();
+    }
+
+    public static final Creator<Rooms> CREATOR = new Creator<Rooms>() {
+        @Override
+        public Rooms createFromParcel(Parcel in) {
+            return new Rooms(in);
+        }
+
+        @Override
+        public Rooms[] newArray(int size) {
+            return new Rooms[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -128,5 +158,26 @@ public class Rooms {
 
     public void setrNoteToTenant(String rNoteToTenant) {
         this.rNoteToTenant = rNoteToTenant;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(rName);
+        parcel.writeString(rPrice);
+        parcel.writeString(rFloorNumber);
+        parcel.writeString(rBedRoomNumber);
+        parcel.writeString(rLivingRoomNumber);
+        parcel.writeString(rArea);
+        parcel.writeString(rLimitTenants);
+        parcel.writeString(rDeposit);
+        parcel.writeString(rGender);
+        parcel.writeString(rDescription);
+        parcel.writeString(rNoteToTenant);
     }
 }

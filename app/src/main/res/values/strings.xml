@@ -5,6 +5,8 @@
     <string name="share_using" translatable="false">Quản Lý Phòng Trọ 247</string>
 
     <string name="symbol_m2">Diện tích (m<sup>2</sup>) (*)</string>
+    <string name="symbol_m2_v2">0 m<sup>2</sup></string>
+    <string name="symbol_m2_basic"> m<sup>2</sup></string>
 
 
     <string name="main_act_house_title">Số Nhà</string>

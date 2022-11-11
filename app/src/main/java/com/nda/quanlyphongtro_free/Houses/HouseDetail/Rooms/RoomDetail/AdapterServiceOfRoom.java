@@ -1,17 +1,14 @@
-package com.nda.quanlyphongtro_free.Houses.Rooms;
+package com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.nda.quanlyphongtro_free.Houses.AddHouse.AddHouse;
 import com.nda.quanlyphongtro_free.Model.Service;
 import com.nda.quanlyphongtro_free.R;
 
@@ -20,11 +17,11 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
-public class AdapterServiceInRoom extends RecyclerView.Adapter<AdapterServiceInRoom.HolderAddHouse> {
-    RoomsSystem context;
+public class AdapterServiceOfRoom extends RecyclerView.Adapter<AdapterServiceOfRoom.HolderAddHouse> {
+    RoomDetailSystem context;
     List<Service> serviceList;
 
-    public AdapterServiceInRoom(RoomsSystem context, List<Service> serviceList) {
+    public AdapterServiceOfRoom(RoomDetailSystem context, List<Service> serviceList) {
         this.context = context;
         this.serviceList = serviceList;
     }

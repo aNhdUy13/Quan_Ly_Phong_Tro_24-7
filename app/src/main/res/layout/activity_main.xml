@@ -97,7 +97,7 @@
                         android:layout_height="0dp"
                         android:layout_weight="1">
                         <TextView
-                            android:text="@string/main_act_house_title"
+                            android:text="Tổng số nhà"
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             android:layout_width="wrap_content"
@@ -116,7 +116,7 @@
                         android:layout_height="0dp"
                         android:layout_weight="1">
                         <TextView
-                            android:text="@string/main_act_room_title"
+                            android:text="Tổng số phòng"
                             android:textStyle="bold"
                             android:textColor="@color/black"
 
@@ -146,7 +146,7 @@
                         android:layout_height="0dp"
                         android:layout_weight="1">
                         <TextView
-                            android:text="@string/main_act_tenants_title"
+                            android:text="Tổng số người thuê"
                             android:textStyle="bold"
                             android:textColor="@color/black"
 
@@ -167,7 +167,7 @@
                         android:layout_height="0dp"
                         android:layout_weight="1">
                         <TextView
-                            android:text="Số dịch vụ"
+                            android:text="Tổng số dịch vụ"
                             android:textStyle="bold"
                             android:textColor="@color/black"
                             android:layout_width="wrap_content"

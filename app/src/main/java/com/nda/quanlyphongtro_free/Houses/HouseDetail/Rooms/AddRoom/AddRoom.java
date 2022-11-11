@@ -1,4 +1,4 @@
-package com.nda.quanlyphongtro_free.Houses.Rooms.AddRoom;
+package com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.AddRoom;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -28,8 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.nda.quanlyphongtro_free.Houses.AddHouse.AddHouse;
-import com.nda.quanlyphongtro_free.Houses.Rooms.RoomsSystem;
+import com.nda.quanlyphongtro_free.Houses.HouseDetail.HouseDetailSystem;
 import com.nda.quanlyphongtro_free.Model.Houses;
 import com.nda.quanlyphongtro_free.Model.Rooms;
 import com.nda.quanlyphongtro_free.Model.Service;
@@ -340,7 +338,7 @@ public class AddRoom extends AppCompatActivity {
     }
 
     private void backToRoom() {
-        Intent intent = new Intent(AddRoom.this, RoomsSystem.class);
+        Intent intent = new Intent(AddRoom.this, HouseDetailSystem.class);
         intent.putExtra("Data_House_Parcelable", houses);
         startActivity(intent);
 
