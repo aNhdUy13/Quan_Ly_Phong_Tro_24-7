@@ -10,20 +10,17 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.nda.quanlyphongtro_free.Contract.ContractSystem;
 import com.nda.quanlyphongtro_free.Houses.HousesSystem;
 import com.nda.quanlyphongtro_free.Services.ServicesSystem;
 import com.nda.quanlyphongtro_free.Setting.Setting;
-import com.nda.quanlyphongtro_free.Tenants.AllTenantsSystem;
+import com.nda.quanlyphongtro_free.Tenants.TenantsSystem;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    CardView cvNhaTro, cvDichVu,cvHopDong,cvnNguoiThue;
+    CardView cvNhaTro, cvDichVu,cv_quanLyTenants;
     ImageView imgSetting;
 
     TextView getTotalHouse, getTotalRoom,getTotalTenants,getTotalAvailableServices;
@@ -93,17 +90,12 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, ServicesSystem.class));
             }
         });
-        cvHopDong.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ContractSystem.class));
-            }
-        });
 
-        cvnNguoiThue.setOnClickListener(new View.OnClickListener() {
+
+        cv_quanLyTenants.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, AllTenantsSystem.class));
+                startActivity(new Intent(MainActivity.this, TenantsSystem.class));
 
             }
         });
@@ -200,8 +192,7 @@ public class MainActivity extends AppCompatActivity {
     private void mapting() {
         cvNhaTro    = (CardView) findViewById(R.id.cvNhaTro);
         cvDichVu    = (CardView) findViewById(R.id.cvDichVu);
-        cvHopDong    = (CardView) findViewById(R.id.cvHopDong);
-        cvnNguoiThue    = (CardView) findViewById(R.id.cvnNguoiThue);
+        cv_quanLyTenants    = (CardView) findViewById(R.id.cv_quanLyTenants);
 
         getTotalHouse   = (TextView) findViewById(R.id.getTotalHouse);
         getTotalRoom    = (TextView) findViewById(R.id.getTotalRoom);

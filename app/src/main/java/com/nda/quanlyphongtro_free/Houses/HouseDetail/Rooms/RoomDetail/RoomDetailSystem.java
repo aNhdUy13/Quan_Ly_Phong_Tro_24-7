@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,8 +26,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.nda.quanlyphongtro_free.Houses.HouseDetail.HouseDetailSystem;
+import com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail.HoaDon.AdapterHoaDon;
+import com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail.HoaDon.AddHoaDon;
 import com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail.Tenants.AddTenant;
 import com.nda.quanlyphongtro_free.MainActivity;
+import com.nda.quanlyphongtro_free.Model.HoaDon;
 import com.nda.quanlyphongtro_free.Model.Houses;
 import com.nda.quanlyphongtro_free.Model.Rooms;
 import com.nda.quanlyphongtro_free.Model.Service;
@@ -47,18 +51,20 @@ public class RoomDetailSystem extends AppCompatActivity {
 
     ShimmerFrameLayout shimmer_view_container;
 
-    ImageView imgBack,img_addTenants, img_editRoom, img_contact;
-    TextView txt_roomName;
+    ImageView imgBack,img_addTenants, img_editRoom, img_addHoaDon;
+    TextView txt_roomName, txt_numberOfTenants;
 
-    LinearLayout ll_danhSachTenants, ll_chiTietPhong, ll_showTenants, ll_showRoomDetail, ll_optionRooms;
-    TextView txt_bgColor1,txt_bgColor2;
+    CardView cv_contact;
+
+    LinearLayout ll_danhSachTenants, ll_chiTietPhong, ll_showTenants, ll_showRoomDetail, ll_optionRooms,
+                    ll_hoaDon,ll_showHoaDon;
+    TextView txt_bgColor1,txt_bgColor2, txt_bgColor3;
     androidx.appcompat.widget.SearchView searchView_searchTenants;
 
     Houses houses;
     Rooms rooms;
 
     RecyclerView rcv_tenants;
-
     List<Tenants> tenantsList = new ArrayList<>();
     AdapterTenants adapterTenants;
 
@@ -73,6 +79,10 @@ public class RoomDetailSystem extends AppCompatActivity {
     AdapterServiceOfRoom adapterServiceOfRoom;
     RecyclerView rcv_servicesRoomDetail;
 
+    List<HoaDon> hoaDonList = new ArrayList<>();
+    RecyclerView rcv_hoaDon;
+    AdapterHoaDon adapterHoaDon;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,28 +91,16 @@ public class RoomDetailSystem extends AppCompatActivity {
         initUI();
 
         init();
-        setupRCV();
+        setupTenantsRCV();
+        setUpHoaDonRCV();
     }
 
-
-
-    private void setupRCV() {
-        adapterTenants = new AdapterTenants(this,tenantsList);
-
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(),
-                RecyclerView.VERTICAL,false);
-        rcv_tenants.setLayoutManager(linearLayoutManager);
-        rcv_tenants.setAdapter(adapterTenants);
-        displayTenants();
-    }
 
     private void init() {
         houses = getIntent().getParcelableExtra("Data_RoomOfHouse_Parcelable");
         rooms  = getIntent().getParcelableExtra("Data_Room_Parcelable");
 
         txt_roomName.setText(rooms.getrName());
-
-
 
         img_addTenants.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,9 +127,12 @@ public class RoomDetailSystem extends AppCompatActivity {
             public void onClick(View view) {
                 ll_showTenants.setVisibility(View.VISIBLE);
                 ll_showRoomDetail.setVisibility(View.GONE);
+                ll_showHoaDon.setVisibility(View.GONE);
+                img_addHoaDon.setVisibility(View.GONE);
                 searchView_searchTenants.setVisibility(View.VISIBLE);
                 txt_bgColor1.setBackgroundColor(Color.parseColor("#4CAF50"));
                 txt_bgColor2.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                txt_bgColor3.setBackgroundColor(Color.parseColor("#FFFFFF"));
 
             }
         });
@@ -140,8 +141,24 @@ public class RoomDetailSystem extends AppCompatActivity {
             public void onClick(View view) {
                 ll_showRoomDetail.setVisibility(View.VISIBLE);
                 ll_showTenants.setVisibility(View.GONE);
+                ll_showHoaDon.setVisibility(View.GONE);
+                img_addHoaDon.setVisibility(View.GONE);
                 searchView_searchTenants.setVisibility(View.GONE);
                 txt_bgColor2.setBackgroundColor(Color.parseColor("#4CAF50"));
+                txt_bgColor1.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                txt_bgColor3.setBackgroundColor(Color.parseColor("#FFFFFF"));
+            }
+        });
+        ll_hoaDon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ll_showHoaDon.setVisibility(View.VISIBLE);
+                img_addHoaDon.setVisibility(View.VISIBLE);
+                ll_showRoomDetail.setVisibility(View.GONE);
+                ll_showTenants.setVisibility(View.GONE);
+                searchView_searchTenants.setVisibility(View.GONE);
+                txt_bgColor3.setBackgroundColor(Color.parseColor("#4CAF50"));
+                txt_bgColor2.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 txt_bgColor1.setBackgroundColor(Color.parseColor("#FFFFFF"));
             }
         });
@@ -152,8 +169,84 @@ public class RoomDetailSystem extends AppCompatActivity {
 
             }
         });
+
+        img_addHoaDon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RoomDetailSystem.this, AddHoaDon.class);
+
+                intent.putExtra("Data_House_Parcelable", houses);
+                intent.putExtra("Data_Room_Parcelable", rooms);
+
+                startActivity(intent);
+            }
+        });
     }
 
+
+    /***************************
+     *
+     *
+     * (Related) Hoa Don
+     *
+     *
+     *************************** */
+    private void setUpHoaDonRCV() {
+        adapterHoaDon = new AdapterHoaDon(this,hoaDonList);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(),
+                RecyclerView.VERTICAL,false);
+        rcv_hoaDon.setLayoutManager(linearLayoutManager);
+        rcv_hoaDon.setAdapter(adapterHoaDon);
+
+        displayHoaDon();
+    }
+    public void displayHoaDon()
+    {
+        hoaDonList.clear();
+
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    HoaDon hoaDon = dataSnapshot.getValue(HoaDon.class);
+                    hoaDonList.add(0,hoaDon);
+                }
+
+                adapterHoaDon.notifyDataSetChanged();
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        };
+        Query query = myRef.child("receipt").child(firebaseUser.getUid()).child(houses.gethId()).child(rooms.getId());
+        query.addListenerForSingleValueEvent(valueEventListener);
+
+
+
+    }
+
+
+
+
+    /***************************
+     *
+     *
+     * (Related) Tenants
+     *
+     *
+     *************************** */
+    private void setupTenantsRCV() {
+        adapterTenants = new AdapterTenants(this,tenantsList);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(),
+                RecyclerView.VERTICAL,false);
+        rcv_tenants.setLayoutManager(linearLayoutManager);
+        rcv_tenants.setAdapter(adapterTenants);
+        displayTenants();
+    }
 
 
     private void displayTenants()
@@ -170,6 +263,7 @@ public class RoomDetailSystem extends AppCompatActivity {
                 }
 
                 relatedRoomDetail();
+                txt_numberOfTenants.setText("Người thuê (" + tenantsList.size() + ")");
 
                 adapterTenants.notifyDataSetChanged();
 
@@ -265,6 +359,7 @@ public class RoomDetailSystem extends AppCompatActivity {
 
         displayServices();
     }
+
     private void displayServices() {
         serviceList.clear();
 
@@ -284,7 +379,7 @@ public class RoomDetailSystem extends AppCompatActivity {
                     rcv_tenants.setVisibility(View.VISIBLE);
                     img_addTenants.setVisibility(View.VISIBLE);
                     img_addTenants.setVisibility(View.VISIBLE);
-                    img_contact.setVisibility(View.VISIBLE);
+                    cv_contact.setVisibility(View.VISIBLE);
                     img_editRoom.setVisibility(View.VISIBLE);
                     ll_optionRooms.setVisibility(View.VISIBLE);
                     shimmer_view_container.setVisibility(View.GONE);
@@ -295,7 +390,8 @@ public class RoomDetailSystem extends AppCompatActivity {
                 public void onCancelled(@NonNull DatabaseError error) {
                 }
             };
-            Query query = myRef.child("houses").child(firebaseUser.getUid()).child(houses.gethId()).child("serviceList");
+            Query query = myRef.child("rooms").child(firebaseUser.getUid())
+                    .child(houses.gethId()).child(rooms.getId()).child("serviceList");
             query.addListenerForSingleValueEvent(valueEventListener);
         } catch (Exception e)
         {
@@ -307,6 +403,9 @@ public class RoomDetailSystem extends AppCompatActivity {
         }
 
     }
+
+
+
 
     private void backToRoomSystem()
     {
@@ -325,23 +424,27 @@ public class RoomDetailSystem extends AppCompatActivity {
         imgBack         =  findViewById(R.id.imgBack);
         img_addTenants  =  findViewById(R.id.img_addTenants);
         img_editRoom    = findViewById(R.id.img_editRoom);
-        img_contact     = findViewById(R.id.img_contact);
+        img_addHoaDon   = findViewById(R.id.img_addHoaDon);
 
         rcv_tenants     =  findViewById(R.id.rcv_tenants);
 
-        txt_roomName     =  findViewById(R.id.txt_roomName);
+        cv_contact      = findViewById(R.id.cv_contact);
 
+        txt_roomName        =  findViewById(R.id.txt_roomName);
+        txt_numberOfTenants = findViewById(R.id.txt_numberOfTenants);
 
         ll_danhSachTenants  =  findViewById(R.id.ll_danhSachTenants);
         ll_chiTietPhong     =  findViewById(R.id.ll_chiTietPhong);
         txt_bgColor1        =  findViewById(R.id.txt_bgColor1);
         txt_bgColor2        =  findViewById(R.id.txt_bgColor2);
+        txt_bgColor3        = findViewById(R.id.txt_bgColor3);
         ll_showTenants      =  findViewById(R.id.ll_showTenants);
-        ll_showRoomDetail     =  findViewById(R.id.ll_showRoomDetail);
-        ll_optionRooms        = findViewById(R.id.ll_optionRooms);
+        ll_showRoomDetail   =  findViewById(R.id.ll_showRoomDetail);
+        ll_optionRooms      = findViewById(R.id.ll_optionRooms);
+        ll_hoaDon           = findViewById(R.id.ll_hoaDon);
+        ll_showHoaDon       = findViewById(R.id.ll_showHoaDon);
 
         searchView_searchTenants = findViewById(R.id.searchView_searchTenants);
-
 
 
         txt_roomFee     =  findViewById(R.id.txt_roomFee);
@@ -362,6 +465,8 @@ public class RoomDetailSystem extends AppCompatActivity {
         rcv_servicesRoomDetail     =  findViewById(R.id.rcv_servicesRoomDetail);
 
         btn_deleteRoom = findViewById(R.id.btn_deleteRoom);
+
+        rcv_hoaDon = findViewById(R.id.rcv_hoaDon);
     }
 
 
@@ -372,17 +477,18 @@ public class RoomDetailSystem extends AppCompatActivity {
         super.onBackPressed();
     }
 
+
     @Override
     protected void onStart() {
         // Hide all function field and show shimmer effect
-//        searchView_searchTenants.setVisibility(View.GONE);
-//        rcv_tenants.setVisibility(View.GONE);
-//        img_addTenants.setVisibility(View.GONE);
-//        img_contact.setVisibility(View.GONE);
-//        img_editRoom.setVisibility(View.GONE);
-//        ll_optionRooms.setVisibility(View.GONE);
-//        shimmer_view_container.setVisibility(View.VISIBLE);
-//        shimmer_view_container.startShimmerAnimation();
+        searchView_searchTenants.setVisibility(View.GONE);
+        rcv_tenants.setVisibility(View.GONE);
+        img_addTenants.setVisibility(View.GONE);
+        cv_contact.setVisibility(View.GONE);
+        img_editRoom.setVisibility(View.GONE);
+        ll_optionRooms.setVisibility(View.GONE);
+        shimmer_view_container.setVisibility(View.VISIBLE);
+        shimmer_view_container.startShimmerAnimation();
 
         //displayServices();
 

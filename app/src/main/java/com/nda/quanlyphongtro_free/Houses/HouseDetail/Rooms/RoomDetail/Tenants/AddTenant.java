@@ -1,5 +1,7 @@
 package com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail.Tenants;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -7,10 +9,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,6 +46,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -90,6 +95,21 @@ public class AddTenant extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 backToRoomDetail();
+            }
+        });
+
+        txt_selectDob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datePicker(txt_selectDob);
+            }
+        });
+
+
+        txt_selectNgayCapCMND.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datePicker(txt_selectNgayCapCMND);
             }
         });
     }
@@ -143,6 +163,34 @@ public class AddTenant extends AppCompatActivity {
 
         AddTenant.this.finish();
     }
+
+    /*******************************************************
+     *
+     * (Related to) Date Picker
+     *
+     ******************************************************* */
+    private void datePicker(TextView showPickTime)
+    {
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+
+
+        // Implement date picker to get user's choice date
+        DatePickerDialog datePickerDialog = new DatePickerDialog(AddTenant.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int Myear, int Mmonth, int MdayOfMonth) {
+                String FinalDate = (MdayOfMonth + "/" + (Mmonth + 1) + "/" + (Myear) );
+
+                showPickTime.setText(FinalDate);
+            }
+        }, year, month, day);
+
+        datePickerDialog.show();
+    }
+
+
 
     private void initUI() {
         imgBack     = findViewById(R.id.imgBack);

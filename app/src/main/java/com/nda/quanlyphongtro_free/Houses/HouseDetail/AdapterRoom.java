@@ -44,9 +44,10 @@ public class AdapterRoom extends RecyclerView.Adapter<AdapterRoom.HolderRooms> {
         Rooms rooms = roomsList.get(position);
 
         holder.txt_roomName.setText(rooms.getrName());
-        holder.txt_roomMembers.setText("Số người : 0/" + rooms.getrLimitTenants());
+        // holder.txt_roomMembers.setText("Số người : 0/" + rooms.getrLimitTenants());
         holder.txt_roomFloor.setText("Tầng : " + rooms.getrFloorNumber());
 
+        context.countTenants(rooms, holder.txt_roomMembers);
         /**
          * Format cost lấy về từ firebase
          * theo định dạng money

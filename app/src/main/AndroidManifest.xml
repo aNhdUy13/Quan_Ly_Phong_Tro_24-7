@@ -19,6 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuanLyPhongTro_FREE">
 
+        <activity android:name=".Houses.HouseDetail.Rooms.RoomDetail.HoaDon.AddHoaDon"/>
         <activity android:name=".Houses.HouseDetail.Rooms.RoomDetail.Tenants.AddTenant"/>
         <activity android:name=".Houses.HouseDetail.Rooms.RoomDetail.RoomDetailSystem"/>
         <activity
@@ -27,18 +28,14 @@
         <activity android:name=".Houses.HouseDetail.Rooms.Payment.PaymentSystem" />
         <activity android:name=".Setting.Billing.Billing" />
         <activity android:name=".Setting.Setting" />
+
         <activity
-            android:name=".Contract.ContractSystem"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".Tenants.AllTenantsSystem"
+            android:name=".Tenants.TenantsSystem"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Services.ServicesSystem"
             android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name=".Tenants.TenantsSystem"
-            android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".Houses.HouseDetail.HouseDetailSystem"
             android:windowSoftInputMode="adjustPan" />

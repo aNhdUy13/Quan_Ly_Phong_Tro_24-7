@@ -30,6 +30,7 @@ import com.nda.quanlyphongtro_free.MainActivity;
 import com.nda.quanlyphongtro_free.Model.Houses;
 import com.nda.quanlyphongtro_free.Model.Rooms;
 import com.nda.quanlyphongtro_free.Model.Service;
+import com.nda.quanlyphongtro_free.Model.Tenants;
 import com.nda.quanlyphongtro_free.R;
 
 import java.text.DecimalFormat;
@@ -47,9 +48,10 @@ public class HouseDetailSystem extends AppCompatActivity {
     ShimmerFrameLayout shimmer_view_container;
 
     ImageView imgBack,img_addRoom, img_editHouse;
-    TextView txt_houseName;
+    TextView txt_houseName, txt_numberOfRoomsInHouse;
 
-    LinearLayout ll_danhSachPhong, ll_chiTietNha, ll_showDanhSachPhong, ll_showChiTietNha, ll_optionHouse;
+    LinearLayout ll_danhSachPhong, ll_chiTietNha, ll_showDanhSachPhong,
+            ll_showChiTietNha, ll_optionHouse;
     TextView txt_bgColor1,txt_bgColor2;
     androidx.appcompat.widget.SearchView searchView_searchRoom;
     Houses houses;
@@ -167,6 +169,7 @@ public class HouseDetailSystem extends AppCompatActivity {
 
                 relatedHouseDetail();
 
+                txt_numberOfRoomsInHouse.setText("Danh sách phòng (" + roomsList.size() + ")");
                 roomAdapter.notifyDataSetChanged();
 
             }
@@ -194,7 +197,7 @@ public class HouseDetailSystem extends AppCompatActivity {
 
         txt_numberOfRooms.setText(roomsList.size() + "");
 
-        txt_numberOfTenants.setText("");
+        countTenants();
 
         txt_numberOfFloors.setText(houses.gethFloorsNumber());
 
@@ -288,6 +291,71 @@ public class HouseDetailSystem extends AppCompatActivity {
     }
 
 
+    private void countTenants()
+    {
+        List<Tenants> tenantsList = new ArrayList<>();
+
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    Tenants tenants = dataSnapshot.getValue(Tenants.class);
+                    tenantsList.add(tenants);
+                }
+
+                txt_numberOfTenants.setText(tenantsList.size() + "");
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        };
+        Query query = myRef.child("tenants").child(firebaseUser.getUid()).orderByChild("rentHouseId").equalTo(houses.gethId());
+        query.addListenerForSingleValueEvent(valueEventListener);
+    }
+
+    /***************************
+     *
+     *
+     * (Related)
+     *
+     *
+     *************************** */
+    public void countTenants(Rooms rooms, TextView txtShowNumTenantsWithLimit)
+    {
+        List<Tenants> tenantsList = new ArrayList<>();
+
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                {
+                    Tenants tenants = dataSnapshot.getValue(Tenants.class);
+                    tenantsList.add(tenants);
+                }
+                if (Integer.parseInt(rooms.getrLimitTenants()) < tenantsList.size())
+                {
+                    txtShowNumTenantsWithLimit.setText("Số người : " + tenantsList.size() +
+                            "/" + rooms.getrLimitTenants() + " (Số lượng vượt giới hạn) ");
+                }
+                else {
+                    txtShowNumTenantsWithLimit.setText("Số người : " + tenantsList.size() + "/" + rooms.getrLimitTenants());
+                }
+
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        };
+        Query query = myRef.child("tenants").child(firebaseUser.getUid()).orderByChild("rentRoomId").equalTo(rooms.getId());
+        query.addListenerForSingleValueEvent(valueEventListener);
+
+
+
+    }
+
+
     private void initUI() {
         shimmer_view_container = findViewById(R.id.shimmer_view_container);
 
@@ -297,7 +365,8 @@ public class HouseDetailSystem extends AppCompatActivity {
 
         rcv_rooms     =  findViewById(R.id.rcv_rooms);
 
-        txt_houseName     =  findViewById(R.id.txt_houseName);
+        txt_houseName               =  findViewById(R.id.txt_houseName);
+        txt_numberOfRoomsInHouse    = findViewById(R.id.txt_numberOfRoomsInHouse);
 
         ll_danhSachPhong  =  findViewById(R.id.ll_danhSachPhong);
         ll_chiTietNha     =  findViewById(R.id.ll_chiTietNha);

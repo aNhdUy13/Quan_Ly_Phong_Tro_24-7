@@ -6,16 +6,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Houses.HouseDetail.HouseDetailSystem">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_contact"
+
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginBottom="25dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="#4CAF50"
+        android:elevation="5dp"
+
+        app:cardCornerRadius="25dp">
+        <ImageView
+            android:padding="5dp"
+
+            android:src="@drawable/ic_contract"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </androidx.cardview.widget.CardView>
+
+
     <ImageView
-        android:id="@+id/img_contact"
+        android:id="@+id/img_addHoaDon"
         android:layout_marginRight="25dp"
         android:layout_marginBottom="25dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:src="@drawable/ic_contract"
+        android:src="@drawable/plus"
         android:elevation="5dp"
-        android:layout_width="45dp"
-        android:layout_height="45dp"/>
+        android:visibility="gone"
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -150,7 +174,7 @@
         <LinearLayout
             android:id="@+id/ll_optionRooms"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:orientation="horizontal">
             <LinearLayout
                 android:id="@+id/ll_danhSachTenants"
@@ -159,12 +183,14 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
                 <TextView
+                    android:id="@+id/txt_numberOfTenants"
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="50dp"
                     android:gravity="center"
                     android:textSize="15dp"
                     android:textColor="@color/black"
-                    android:text="Người thuê"/>
+                    android:text="Người thuê (0)"/>
+
                 <TextView
                     android:id="@+id/txt_bgColor1"
                     android:layout_width="match_parent"
@@ -180,7 +206,7 @@
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
+                    android:layout_height="50dp"
                     android:gravity="center"
                     android:textSize="15dp"
                     android:textColor="@color/black"
@@ -191,6 +217,31 @@
                     android:layout_height="5dp"
                     android:background="#FFFFFF"/>
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_hoaDon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:textSize="15dp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:textColor="@color/black"
+                    android:text="Hóa đơn"/>
+                <TextView
+                    android:id="@+id/txt_bgColor3"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:background="#FFFFFF"/>
+            </LinearLayout>
+
         </LinearLayout>
 
         <androidx.appcompat.widget.SearchView
@@ -200,6 +251,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="10dp"
+
 
             app:queryHint="Tìm kiếm Tên phòng / Số tầng"
             android:background="@drawable/shape_search_view"
@@ -610,6 +662,31 @@
 
         </LinearLayout>
 
+        <!--
+            (CONTENT) Hóa đơn
+        -->
+        <LinearLayout
+            android:id="@+id/ll_showHoaDon"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="9.3"
+
+            android:visibility="gone"
+
+            android:padding="10dp"
+            android:orientation="vertical">
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcv_hoaDon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:overScrollMode="never"
+                android:scrollbars="none"/>
+
+
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>
