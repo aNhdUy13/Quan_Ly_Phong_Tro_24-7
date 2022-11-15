@@ -16,7 +16,7 @@
             android:layout_height="0dp"
             android:gravity="center"
             android:orientation="vertical"
-            android:background="#22b14c"
+            android:background="#4caf50"
             android:layout_weight="2.3">
 
             <ImageView
@@ -196,7 +196,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="60dp"
                                 android:layout_marginTop="20dp"
-                                android:backgroundTint="#22b14c"
+                                android:backgroundTint="#4caf50"
                                 android:text="Đăng Nhập"
                                 android:textStyle="bold"
                                 android:textSize="15dp" />
@@ -207,8 +207,8 @@
                         <!--    SIGN UP    -->
                         <LinearLayout
                             android:id="@+id/ll_formSignUp"
-
                             android:visibility="gone"
+
 
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -228,6 +228,7 @@
                                     android:layout_height="wrap_content"
                                     android:inputType="textPersonName"
 
+                                    android:maxLength="25"
                                     android:drawablePadding="5dp"
                                     android:drawableLeft="@drawable/ic_baseline_person"
 
