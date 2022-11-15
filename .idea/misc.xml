@@ -34,6 +34,7 @@
         <entry key="..\:/(Related)Programming/AndroidStudio/Result/GG/Quan_Ly_Phong_Tro_24-7/app/src/main/res/drawable/left_arrow.xml" value="0.1585" />
         <entry key="..\:/(Related)Programming/AndroidStudio/Result/GG/Quan_Ly_Phong_Tro_24-7/app/src/main/res/drawable/main_shape.xml" value="0.125" />
         <entry key="..\:/(Related)Programming/AndroidStudio/Result/GG/Quan_Ly_Phong_Tro_24-7/app/src/main/res/drawable/shape_add_house_select_city.xml" value="0.1555" />
+        <entry key="..\:/(Related)Programming/AndroidStudio/Result/GG/Quan_Ly_Phong_Tro_24-7/app/src/main/res/drawable/shape_bottomsheet.xml" value="0.176" />
         <entry key="..\:/(Related)Programming/AndroidStudio/Result/GG/Quan_Ly_Phong_Tro_24-7/app/src/main/res/drawable/shape_green.xml" value="0.172" />
         <entry key="..\:/(Related)Programming/AndroidStudio/Result/GG/Quan_Ly_Phong_Tro_24-7/app/src/main/res/drawable/shape_green_non_solid.xml" value="0.172" />
         <entry key="..\:/(Related)Programming/AndroidStudio/Result/GG/Quan_Ly_Phong_Tro_24-7/app/src/main/res/drawable/shape_login_signup.xml" value="0.1435" />
@@ -59,6 +60,7 @@
         <entry key="..\:/(Related)Programming/AndroidStudio/Result/GG/Quan_Ly_Phong_Tro_24-7/app/src/main/res/layout/activity_services_system.xml" value="0.25052083333333336" />
         <entry key="..\:/(Related)Programming/AndroidStudio/Result/GG/Quan_Ly_Phong_Tro_24-7/app/src/main/res/layout/activity_setting.xml" value="0.25052083333333336" />
         <entry key="..\:/(Related)Programming/AndroidStudio/Result/GG/Quan_Ly_Phong_Tro_24-7/app/src/main/res/layout/activity_tenants_system.xml" value="0.25052083333333336" />
+        <entry key="..\:/(Related)Programming/AndroidStudio/Result/GG/Quan_Ly_Phong_Tro_24-7/app/src/main/res/layout/bottomsheet_contract.xml" value="0.24947916666666667" />
         <entry key="..\:/(Related)Programming/AndroidStudio/Result/GG/Quan_Ly_Phong_Tro_24-7/app/src/main/res/layout/bottomsheet_forgot_password.xml" value="0.25052083333333336" />
         <entry key="..\:/(Related)Programming/AndroidStudio/Result/GG/Quan_Ly_Phong_Tro_24-7/app/src/main/res/layout/dialog_add_services.xml" value="0.25052083333333336" />
         <entry key="..\:/(Related)Programming/AndroidStudio/Result/GG/Quan_Ly_Phong_Tro_24-7/app/src/main/res/layout/dialog_add_update_houses.xml" value="0.25104166666666666" />

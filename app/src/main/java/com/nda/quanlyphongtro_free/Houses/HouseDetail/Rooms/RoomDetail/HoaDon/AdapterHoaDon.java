@@ -41,7 +41,7 @@ public class AdapterHoaDon extends RecyclerView.Adapter<AdapterHoaDon.HolderHoaD
     public void onBindViewHolder(@NonNull AdapterHoaDon.HolderHoaDon holder, int position) {
         HoaDon hoaDon = hoaDonList.get(position);
 
-        holder.txt_showFullSelectedTime.setText(hoaDon.getHoaDonThang());
+        holder.txt_showFullSelectedTime.setText("(" + hoaDon.getHoaDonThang() + ")");
 
         String[] splitHoaDonThang = hoaDon.getHoaDonThang().split("/");
         holder.txt_dateHoaDon.setText("#" + splitHoaDonThang[1] + "/" + splitHoaDonThang[2]);

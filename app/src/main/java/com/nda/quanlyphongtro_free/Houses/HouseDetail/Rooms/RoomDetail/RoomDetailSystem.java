@@ -1,10 +1,17 @@
 package com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +38,7 @@ import com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail.HoaDon.Ad
 import com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail.HoaDon.AddHoaDon;
 import com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail.Tenants.AddTenant;
 import com.nda.quanlyphongtro_free.MainActivity;
+import com.nda.quanlyphongtro_free.Model.Contract;
 import com.nda.quanlyphongtro_free.Model.HoaDon;
 import com.nda.quanlyphongtro_free.Model.Houses;
 import com.nda.quanlyphongtro_free.Model.Rooms;
@@ -39,7 +48,10 @@ import com.nda.quanlyphongtro_free.Model.Tenants;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -179,6 +191,322 @@ public class RoomDetailSystem extends AppCompatActivity {
                 intent.putExtra("Data_Room_Parcelable", rooms);
 
                 startActivity(intent);
+            }
+        });
+
+        cv_contact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                executeContract();
+            }
+        });
+    }
+
+
+    /***************************
+     *
+     *
+     * (Related) Contract
+     *
+     *
+     *************************** */
+    private void executeContract() {
+        // Get services first
+        serviceList.clear();
+        try {
+            ValueEventListener valueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                    {
+                        Service service = dataSnapshot.getValue(Service.class);
+
+                        serviceList.add(service);
+                    }
+
+                    // Check if current room has contract or not
+                    myRef.child("contracts").child(firebaseUser.getUid()).child(houses.gethId()).child(rooms.getId())
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if (snapshot.getValue() == null)
+                                    {
+                                        // Dont have Contract
+                                        dialogAddContract();
+
+                                    }
+                                    else {
+                                        // Contract already existed
+                                        Toast.makeText(RoomDetailSystem.this, "Existed", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            };
+            Query query = myRef.child("rooms").child(firebaseUser.getUid())
+                    .child(houses.gethId()).child(rooms.getId()).child("serviceList");
+            query.addListenerForSingleValueEvent(valueEventListener);
+        } catch (Exception e)
+        {
+            startActivity(new Intent(RoomDetailSystem.this, MainActivity.class));
+            RoomDetailSystem.this.finish();
+            Toast.makeText(this, "Warning : Kiểm tra đường truyền Internet !", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    private void dialogAddContract() {
+        Dialog dialog = new Dialog(RoomDetailSystem.this);
+        dialog.setContentView(R.layout.dialog_add_contract);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextInputEditText textInputEdt_daiDienNguoiThue;
+        TextView txt_showRentHouse, txt_showRentRoom, txt_camKetSoNguoiThue, txt_selectFromDate,
+                txt_selectToDate, txt_selectNgayBatDauTinhTien;
+
+        EditText edt_kiThanhToanTienPhong, edt_tienPhong, edt_tienCoc;
+
+        RecyclerView rcv_services;
+
+        Button btn_addContract, btn_cancelContract;
+
+        textInputEdt_daiDienNguoiThue = dialog.findViewById(R.id.textInputEdt_daiDienNguoiThue);
+
+        txt_showRentHouse = dialog.findViewById(R.id.txt_showRentHouse);
+        txt_showRentRoom = dialog.findViewById(R.id.txt_showRentRoom);
+        txt_camKetSoNguoiThue = dialog.findViewById(R.id.txt_camKetSoNguoiThue);
+        txt_selectFromDate = dialog.findViewById(R.id.txt_selectFromDate);
+        txt_selectToDate = dialog.findViewById(R.id.txt_selectToDate);
+        txt_selectNgayBatDauTinhTien = dialog.findViewById(R.id.txt_selectNgayBatDauTinhTien);
+
+        edt_kiThanhToanTienPhong = dialog.findViewById(R.id.edt_kiThanhToanTienPhong);
+        edt_tienPhong = dialog.findViewById(R.id.edt_tienPhong);
+        edt_tienCoc = dialog.findViewById(R.id.edt_tienCoc);
+
+        btn_addContract = dialog.findViewById(R.id.btn_addContract);
+        btn_cancelContract = dialog.findViewById(R.id.btn_cancelContract);
+
+        rcv_services = dialog.findViewById(R.id.rcv_services);
+
+
+        /**
+         * Format cost lấy về từ firebase
+         * theo định dạng money
+         * */
+        DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+        formatter.applyPattern("#,###,###,###");
+        Double cost = Double.parseDouble(rooms.getrPrice());
+        edt_tienPhong.setText(formatter.format(cost));
+
+        formatMoneyType(edt_tienPhong);
+        formatMoneyType(edt_tienCoc);
+
+        setCurrentDate(txt_selectFromDate);
+        setCurrentDate(txt_selectNgayBatDauTinhTien);
+
+        txt_selectFromDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datePicker(txt_selectFromDate);
+            }
+        });
+        txt_selectToDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datePicker(txt_selectToDate);
+            }
+        });
+        txt_selectNgayBatDauTinhTien.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datePicker(txt_selectNgayBatDauTinhTien);
+            }
+        });
+
+        txt_showRentHouse.setText(houses.gethName());
+        txt_showRentRoom.setText(rooms.getrName());
+
+        // When room has contract
+        adapterServiceOfRoom = new AdapterServiceOfRoom(this, serviceList);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(),
+                RecyclerView.HORIZONTAL,false);
+        rcv_services.setLayoutManager(linearLayoutManager);
+        rcv_services.setAdapter(adapterServiceOfRoom);
+
+        btn_addContract.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String daiDienNguoiThue = textInputEdt_daiDienNguoiThue.getText().toString().trim();
+
+                String rentHouse = txt_showRentHouse.getText().toString().trim();
+                String rentRoom = txt_showRentRoom.getText().toString().trim();
+                String camKetSoNguoiThue = txt_camKetSoNguoiThue.getText().toString().trim();
+                String fromDate = txt_selectFromDate.getText().toString().trim();
+                String toDate = txt_selectToDate.getText().toString().trim();
+                String ngayBatDauTinhTien = txt_selectNgayBatDauTinhTien.getText().toString().trim();
+
+                String tienPhong = edt_tienPhong.getText().toString().trim();
+                String tienCoc = edt_tienCoc.getText().toString().trim();
+                String kiThanhToanTienPhong = edt_kiThanhToanTienPhong.getText().toString().trim();
+
+
+                if (daiDienNguoiThue.equals(""))
+                {
+                    Toast.makeText(RoomDetailSystem.this, "Error : Ghi đại diện người thuê", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if(camKetSoNguoiThue.equals(""))
+                {
+                    Toast.makeText(RoomDetailSystem.this, "Error : Điền cam kết số người thuê", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if(toDate.equals(""))
+                {
+                    Toast.makeText(RoomDetailSystem.this, "Error : Chọn thời hạn của hợp đồng", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if(kiThanhToanTienPhong.equals(""))
+                {
+                    Toast.makeText(RoomDetailSystem.this, "Error : Kỳ thanh toán tiền phòng không được trống", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if(tienPhong.equals(""))
+                {
+                    Toast.makeText(RoomDetailSystem.this, "Error : Tiền phòng không được trống", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if(tienCoc.equals(""))
+                {
+                    Toast.makeText(RoomDetailSystem.this, "Error : Tiền cọc không được trống", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if (Integer.parseInt(camKetSoNguoiThue) <= 0)
+                {
+                    Toast.makeText(RoomDetailSystem.this, "Error : Cam kết người thuê không hợp lệ", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                /**
+                 * Chuyển Money Type về integer để insert vào database
+                 * và thực hiện tính toán.
+                 * */
+                if (tienPhong.contains(","))
+                    tienPhong = tienPhong.replaceAll(",","");
+                /**
+                 * Chuyển Money Type về integer để insert vào database
+                 * và thực hiện tính toán.
+                 * */
+                if (tienCoc.contains(","))
+                    tienCoc = tienCoc.replaceAll(",","");
+
+                // Get current Datetime
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+                String currentDateAndTime = sdf.format(new Date());
+
+                String contractId = "contract_" + currentDateAndTime + "_" + firebaseUser.getUid();
+                Contract contract = new Contract(contractId, daiDienNguoiThue,rentHouse, rentRoom,
+                        camKetSoNguoiThue, fromDate, toDate, ngayBatDauTinhTien, kiThanhToanTienPhong,tienPhong,
+                        tienCoc, serviceList );
+
+                myRef.child("contracts").child(firebaseUser.getUid()).child(houses.gethId()).child(rooms.getId()).setValue(contract);
+
+                Toast.makeText(RoomDetailSystem.this, "Thêm hợp đồng Thành Công !", Toast.LENGTH_SHORT).show();
+
+                dialog.dismiss();
+            }
+        });
+
+        btn_cancelContract.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.show();
+    }
+    private void setCurrentDate(TextView txtCurrentDate)
+    {
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+
+        int finalMonth = month + 1;
+        txtCurrentDate.setText(day + "/" + finalMonth + "/" + year);
+
+    }
+    private void datePicker(TextView showPickTime)
+    {
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+
+
+        // Implement date picker to get user's choice date
+        DatePickerDialog datePickerDialog = new DatePickerDialog(RoomDetailSystem.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int Myear, int Mmonth, int MdayOfMonth) {
+                String FinalDate = (MdayOfMonth + "/" + (Mmonth + 1) + "/" + (Myear) );
+
+                showPickTime.setText(FinalDate);
+            }
+        }, year, month, day);
+
+        datePickerDialog.show();
+    }
+    public void formatMoneyType(EditText edtCostInput)
+    {
+        edtCostInput.addTextChangedListener( new TextWatcher() {
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override public void afterTextChanged(Editable s) {
+                edtCostInput.removeTextChangedListener(this);
+
+                try {
+                    String originalString = s.toString();
+
+                    double doubleVal;
+
+                    /**
+                     * Kiếm tra xem data users nhập vào đã chứa "," chưa ?
+                     * Nếu có thì sẽ thay thế = ""
+                     * */
+                    if (originalString.contains(","))
+                        originalString = originalString.replaceAll(",","");
+
+                    doubleVal = Double.parseDouble(originalString);
+
+
+                    DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+                    formatter.applyPattern("#,###,###,###");
+                    String formattedString = formatter.format(doubleVal);
+
+                    //setting text after format to EditText
+                    edtCostInput.setText(formattedString);
+                    edtCostInput.setSelection(edtCostInput.getText().length());
+
+                }
+                catch (NumberFormatException e)
+                {
+                    e.printStackTrace();
+                }
+
+                edtCostInput.addTextChangedListener(this);
+
             }
         });
     }
