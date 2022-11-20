@@ -1,5 +1,8 @@
 package com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail.HoaDon;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,8 +10,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail.RoomDetailSystem;
 import com.nda.quanlyphongtro_free.Model.HoaDon;
 import com.nda.quanlyphongtro_free.Model.Service;
@@ -20,6 +29,12 @@ import java.util.List;
 import java.util.Locale;
 
 public class AdapterHoaDon extends RecyclerView.Adapter<AdapterHoaDon.HolderHoaDon> {
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef  = database.getReference();
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+
     RoomDetailSystem context;
     List<HoaDon> hoaDonList;
 
@@ -75,7 +90,47 @@ public class AdapterHoaDon extends RecyclerView.Adapter<AdapterHoaDon.HolderHoaD
             holder.txt_daThanhToan.setVisibility(View.VISIBLE);
             holder.txt_chuaThanhToan.setVisibility(View.GONE);
         }
+        holder.cv_hoaDon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetHoaDonOption(hoaDon);
+            }
+        });
     }
+
+    private void bottomSheetHoaDonOption(HoaDon hoaDon) {
+        View view = context.getLayoutInflater().inflate(R.layout.bottomsheet_hoadon_option,null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
+        bottomSheetDialog.setContentView(view);
+
+        TextView txt_editHoaDon = view.findViewById(R.id.txt_editHoaDon);
+        TextView txt_deleteHoaDon = view.findViewById(R.id.txt_deleteHoaDon);
+        CardView cv_closeBottomSheet = view.findViewById(R.id.cv_closeBottomSheet);
+
+        txt_editHoaDon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context.editHoaDon(hoaDon, bottomSheetDialog);
+            }
+        });
+
+        txt_deleteHoaDon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context.dialogConfirmDeleteHoaDon(hoaDon, bottomSheetDialog);
+            }
+        });
+
+        cv_closeBottomSheet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+        bottomSheetDialog.show();
+
+    }
+
 
     @Override
     public int getItemCount() {
@@ -86,6 +141,8 @@ public class AdapterHoaDon extends RecyclerView.Adapter<AdapterHoaDon.HolderHoaD
         TextView txt_dateHoaDon, txt_houseName, txt_roomName, txt_tongTien, txt_roomFee, txt_serviceFee, txt_showFullSelectedTime;
 
         TextView txt_chuaThanhToan, txt_daThanhToan;
+
+        CardView cv_hoaDon;
         public HolderHoaDon(@NonNull View itemView) {
             super(itemView);
 
@@ -100,6 +157,7 @@ public class AdapterHoaDon extends RecyclerView.Adapter<AdapterHoaDon.HolderHoaD
             txt_chuaThanhToan = itemView.findViewById(R.id.txt_chuaThanhToan);
             txt_daThanhToan = itemView.findViewById(R.id.txt_daThanhToan);
 
+            cv_hoaDon   = itemView.findViewById(R.id.cv_hoaDon);
         }
     }
 

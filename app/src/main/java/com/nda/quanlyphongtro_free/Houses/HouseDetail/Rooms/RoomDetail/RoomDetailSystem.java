@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,6 +37,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.nda.quanlyphongtro_free.Houses.HouseDetail.HouseDetailSystem;
 import com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail.HoaDon.AdapterHoaDon;
 import com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail.HoaDon.AddHoaDon;
+import com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail.HoaDon.UpdateHoaDon;
 import com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail.Tenants.AddTenant;
 import com.nda.quanlyphongtro_free.MainActivity;
 import com.nda.quanlyphongtro_free.Model.Contract;
@@ -229,6 +231,8 @@ public class RoomDetailSystem extends AppCompatActivity {
                             .addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    Contract contract = snapshot.getValue(Contract.class);
+
                                     if (snapshot.getValue() == null)
                                     {
                                         // Dont have Contract
@@ -237,8 +241,7 @@ public class RoomDetailSystem extends AppCompatActivity {
                                     }
                                     else {
                                         // Contract already existed
-                                        Toast.makeText(RoomDetailSystem.this, "Existed", Toast.LENGTH_SHORT).show();
-
+                                        bottomSheetContract(contract);
                                     }
                                 }
 
@@ -267,7 +270,7 @@ public class RoomDetailSystem extends AppCompatActivity {
 
     private void dialogAddContract() {
         Dialog dialog = new Dialog(RoomDetailSystem.this);
-        dialog.setContentView(R.layout.dialog_add_contract);
+        dialog.setContentView(R.layout.dialog_add_update_contract);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         TextInputEditText textInputEdt_daiDienNguoiThue;
@@ -512,6 +515,305 @@ public class RoomDetailSystem extends AppCompatActivity {
     }
 
 
+    private void bottomSheetContract(Contract contract)
+    {
+        View view = getLayoutInflater().inflate(R.layout.bottomsheet_contract,null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(RoomDetailSystem.this);
+        bottomSheetDialog.setContentView(view);
+
+        ImageView img_editContract;
+
+        TextView txt_houseName, txt_roomName, txt_thoiHan, txt_daiDienNguoiThue,
+                txt_ngayTinhTien,txt_kiThanhToan, txt_roomFee, txt_deposits,
+                txt_camKetSoNguoiThue;
+
+        CardView cv_closeBottomSheet;
+
+        RecyclerView rcv_servicesContract;
+
+        img_editContract = view.findViewById(R.id.img_editContract);
+        txt_houseName = view.findViewById(R.id.txt_houseName);
+        txt_roomName = view.findViewById(R.id.txt_roomName);
+        txt_thoiHan = view.findViewById(R.id.txt_thoiHan);
+        txt_daiDienNguoiThue = view.findViewById(R.id.txt_daiDienNguoiThue);
+        txt_ngayTinhTien = view.findViewById(R.id.txt_ngayTinhTien);
+        txt_kiThanhToan = view.findViewById(R.id.txt_kiThanhToan);
+        txt_roomFee = view.findViewById(R.id.txt_roomFee);
+        txt_deposits = view.findViewById(R.id.txt_deposits);
+        txt_camKetSoNguoiThue = view.findViewById(R.id.txt_camKetSoNguoiThue);
+
+        cv_closeBottomSheet = view.findViewById(R.id.cv_closeBottomSheet);
+
+        rcv_servicesContract = view.findViewById(R.id.rcv_servicesContract);
+        List<Service> serviceListContract = new ArrayList<>();
+
+        txt_houseName.setText(contract.getRentHouse());
+        txt_roomName.setText(contract.getRentRoom());
+        txt_thoiHan.setText("Thời hạn : " + contract.getFromDate() + " đến " + contract.getToDate());
+        txt_daiDienNguoiThue.setText("Đại diện : " + contract.getDaiDienNguoiThue());
+        txt_ngayTinhTien.setText(contract.getNgayBatDauTinhTien());
+        txt_kiThanhToan.setText(contract.getKyThanhToanTienPhong());
+
+        /**
+         * Format cost lấy về từ firebase
+         * theo định dạng money
+         * */
+        DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+        formatter.applyPattern("#,###,###,###");
+        Double cost = Double.parseDouble(contract.getTienPhong());
+        txt_roomFee.setText(formatter.format(cost) + " đ");
+        Double cost2 = Double.parseDouble(contract.getTienCoc());
+        txt_deposits.setText(formatter.format(cost2) + " đ");
+
+        txt_camKetSoNguoiThue.setText(contract.getCamKetNguoiThue());
+
+
+        try {
+            ValueEventListener valueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                    {
+                        Service service = dataSnapshot.getValue(Service.class);
+
+                        serviceListContract.add(service);
+                    }
+
+                    adapterServiceOfRoom = new AdapterServiceOfRoom(RoomDetailSystem.this, serviceListContract);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(),
+                            RecyclerView.HORIZONTAL,false);
+                    rcv_servicesContract.setLayoutManager(linearLayoutManager);
+                    rcv_servicesContract.setAdapter(adapterServiceOfRoom);
+
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            };
+            Query query = myRef.child("contracts").child(firebaseUser.getUid())
+                    .child(houses.gethId()).child(rooms.getId()).child("serviceList");
+            query.addListenerForSingleValueEvent(valueEventListener);
+        } catch (Exception e)
+        {
+            startActivity(new Intent(RoomDetailSystem.this, MainActivity.class));
+            RoomDetailSystem.this.finish();
+            Toast.makeText(this, "Warning : Kiểm tra đường truyền Internet !", Toast.LENGTH_SHORT).show();
+
+        }
+
+
+        img_editContract.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ValueEventListener valueEventListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        bottomSheetDialog.dismiss();
+
+                        Contract contractForUpdate = snapshot.getValue(Contract.class);
+                        dialogUpdateContract(contractForUpdate);
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                };
+                Query query = myRef.child("contracts").child(firebaseUser.getUid())
+                        .child(houses.gethId()).child(rooms.getId());
+                query.addListenerForSingleValueEvent(valueEventListener);
+
+            }
+        });
+
+        cv_closeBottomSheet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+        bottomSheetDialog.show();
+    }
+    private void dialogUpdateContract(Contract contractForUpdate) {
+        Dialog dialog = new Dialog(RoomDetailSystem.this);
+        dialog.setContentView(R.layout.dialog_add_update_contract);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextInputEditText textInputEdt_daiDienNguoiThue;
+        TextView txt_showRentHouse, txt_showRentRoom, txt_camKetSoNguoiThue, txt_selectFromDate,
+                txt_selectToDate, txt_selectNgayBatDauTinhTien, txt_contractTitle;
+
+        EditText edt_kiThanhToanTienPhong, edt_tienPhong, edt_tienCoc;
+
+        RecyclerView rcv_services;
+
+        Button btn_addContract, btn_cancelContract;
+
+        textInputEdt_daiDienNguoiThue = dialog.findViewById(R.id.textInputEdt_daiDienNguoiThue);
+
+        txt_contractTitle = dialog.findViewById(R.id.txt_contractTitle);
+        txt_showRentHouse = dialog.findViewById(R.id.txt_showRentHouse);
+        txt_showRentRoom = dialog.findViewById(R.id.txt_showRentRoom);
+        txt_camKetSoNguoiThue = dialog.findViewById(R.id.txt_camKetSoNguoiThue);
+        txt_selectFromDate = dialog.findViewById(R.id.txt_selectFromDate);
+        txt_selectToDate = dialog.findViewById(R.id.txt_selectToDate);
+        txt_selectNgayBatDauTinhTien = dialog.findViewById(R.id.txt_selectNgayBatDauTinhTien);
+
+        edt_kiThanhToanTienPhong = dialog.findViewById(R.id.edt_kiThanhToanTienPhong);
+        edt_tienPhong = dialog.findViewById(R.id.edt_tienPhong);
+        edt_tienCoc = dialog.findViewById(R.id.edt_tienCoc);
+
+        btn_addContract = dialog.findViewById(R.id.btn_addContract);
+        btn_cancelContract = dialog.findViewById(R.id.btn_cancelContract);
+
+        rcv_services = dialog.findViewById(R.id.rcv_services);
+
+
+        txt_contractTitle.setText("Sửa hợp đồng");
+        textInputEdt_daiDienNguoiThue.setText(contractForUpdate.getDaiDienNguoiThue());
+        txt_showRentHouse.setText(contractForUpdate.getRentHouse());
+        txt_showRentRoom.setText(contractForUpdate.getRentRoom());
+        txt_camKetSoNguoiThue.setText(contractForUpdate.getCamKetNguoiThue());
+        txt_selectFromDate.setText(contractForUpdate.getFromDate());
+        txt_selectToDate.setText(contractForUpdate.getToDate());
+        txt_selectNgayBatDauTinhTien.setText(contractForUpdate.getNgayBatDauTinhTien());
+        edt_kiThanhToanTienPhong.setText(contractForUpdate.getKyThanhToanTienPhong());
+
+
+        /**
+         * Format cost lấy về từ firebase
+         * theo định dạng money
+         * */
+        DecimalFormat formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+        formatter.applyPattern("#,###,###,###");
+        Double cost = Double.parseDouble(contractForUpdate.getTienPhong());
+        edt_tienPhong.setText(formatter.format(cost));
+
+        Double cost2 = Double.parseDouble(contractForUpdate.getTienCoc());
+        edt_tienCoc.setText(formatter.format(cost2));
+
+        formatMoneyType(edt_tienPhong);
+        formatMoneyType(edt_tienCoc);
+
+        txt_selectFromDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datePicker(txt_selectFromDate);
+            }
+        });
+        txt_selectToDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datePicker(txt_selectToDate);
+            }
+        });
+        txt_selectNgayBatDauTinhTien.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datePicker(txt_selectNgayBatDauTinhTien);
+            }
+        });
+
+        txt_showRentHouse.setText(houses.gethName());
+        txt_showRentRoom.setText(rooms.getrName());
+
+        // When room has contract
+        adapterServiceOfRoom = new AdapterServiceOfRoom(this, serviceList);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext(),
+                RecyclerView.HORIZONTAL,false);
+        rcv_services.setLayoutManager(linearLayoutManager);
+        rcv_services.setAdapter(adapterServiceOfRoom);
+
+        btn_addContract.setText("Cập Nhập");
+        btn_addContract.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String daiDienNguoiThue = textInputEdt_daiDienNguoiThue.getText().toString().trim();
+
+                String rentHouse = txt_showRentHouse.getText().toString().trim();
+                String rentRoom = txt_showRentRoom.getText().toString().trim();
+                String camKetSoNguoiThue = txt_camKetSoNguoiThue.getText().toString().trim();
+                String fromDate = txt_selectFromDate.getText().toString().trim();
+                String toDate = txt_selectToDate.getText().toString().trim();
+                String ngayBatDauTinhTien = txt_selectNgayBatDauTinhTien.getText().toString().trim();
+
+                String tienPhong = edt_tienPhong.getText().toString().trim();
+                String tienCoc = edt_tienCoc.getText().toString().trim();
+                String kiThanhToanTienPhong = edt_kiThanhToanTienPhong.getText().toString().trim();
+
+
+                if (daiDienNguoiThue.equals(""))
+                {
+                    Toast.makeText(RoomDetailSystem.this, "Error : Ghi đại diện người thuê", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if(camKetSoNguoiThue.equals(""))
+                {
+                    Toast.makeText(RoomDetailSystem.this, "Error : Điền cam kết số người thuê", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if(toDate.equals(""))
+                {
+                    Toast.makeText(RoomDetailSystem.this, "Error : Chọn thời hạn của hợp đồng", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if(kiThanhToanTienPhong.equals(""))
+                {
+                    Toast.makeText(RoomDetailSystem.this, "Error : Kỳ thanh toán tiền phòng không được trống", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if(tienPhong.equals(""))
+                {
+                    Toast.makeText(RoomDetailSystem.this, "Error : Tiền phòng không được trống", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if(tienCoc.equals(""))
+                {
+                    Toast.makeText(RoomDetailSystem.this, "Error : Tiền cọc không được trống", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if (Integer.parseInt(camKetSoNguoiThue) <= 0)
+                {
+                    Toast.makeText(RoomDetailSystem.this, "Error : Cam kết người thuê không hợp lệ", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                /**
+                 * Chuyển Money Type về integer để insert vào database
+                 * và thực hiện tính toán.
+                 * */
+                if (tienPhong.contains(","))
+                    tienPhong = tienPhong.replaceAll(",","");
+                /**
+                 * Chuyển Money Type về integer để insert vào database
+                 * và thực hiện tính toán.
+                 * */
+                if (tienCoc.contains(","))
+                    tienCoc = tienCoc.replaceAll(",","");
+
+
+                Contract contract = new Contract(contractForUpdate.getcId(), daiDienNguoiThue,rentHouse, rentRoom,
+                        camKetSoNguoiThue, fromDate, toDate, ngayBatDauTinhTien, kiThanhToanTienPhong,tienPhong,
+                        tienCoc, serviceList );
+
+                myRef.child("contracts").child(firebaseUser.getUid()).child(houses.gethId())
+                        .child(rooms.getId()).setValue(contract);
+
+                Toast.makeText(RoomDetailSystem.this, "Sửa hợp đồng Thành Công !", Toast.LENGTH_SHORT).show();
+
+                dialog.dismiss();
+            }
+        });
+
+        btn_cancelContract.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+
+
+        dialog.show();
+    }
+
     /***************************
      *
      *
@@ -556,7 +858,45 @@ public class RoomDetailSystem extends AppCompatActivity {
 
     }
 
+    public void editHoaDon(HoaDon hoaDon, BottomSheetDialog bottomSheetDialog)
+    {
+        Intent intent = new Intent(RoomDetailSystem.this, UpdateHoaDon.class);
 
+        intent.putExtra("Data_House_Parcelable", houses);
+        intent.putExtra("Data_Room_Parcelable", rooms);
+        intent.putExtra("Data_HoaDon_Parcelable", hoaDon);
+
+        startActivity(intent);
+    }
+
+    public void dialogConfirmDeleteHoaDon(HoaDon hoaDon, BottomSheetDialog bottomSheetDialog) {
+        Dialog dialog = new Dialog(RoomDetailSystem.this);
+        dialog.setContentView(R.layout.dialog_delete);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        CardView cv_delete = dialog.findViewById(R.id.cv_delete);
+        CardView cv_cancel = dialog.findViewById(R.id.cv_cancel);
+
+        cv_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myRef.child("receipt").child(firebaseUser.getUid()).child(houses.gethId()).child(rooms.getId())
+                        .child(hoaDon.getId()).removeValue();
+
+                displayHoaDon();
+                dialog.dismiss();
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        cv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
 
 
     /***************************

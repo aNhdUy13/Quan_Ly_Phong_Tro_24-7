@@ -138,7 +138,7 @@
                                 android:maxLines="1"
                                 android:ellipsize="end"
                                 android:padding="15dp"
-                                android:drawableRight="@drawable/ic_baseline_arrow_forward_ios_24"
+                                android:drawableRight="@drawable/ic_baseline_home_work"
                                 />
 
                         </LinearLayout>
@@ -178,7 +178,7 @@
                                 android:ellipsize="end"
 
                                 android:padding="15dp"
-                                android:drawableRight="@drawable/ic_baseline_arrow_forward_ios_24"
+                                android:drawableRight="@drawable/ic_baseline_meeting_room"
                                 />
 
                         </LinearLayout>

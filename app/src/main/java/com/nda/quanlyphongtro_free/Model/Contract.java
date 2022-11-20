@@ -8,6 +8,7 @@ public class Contract {
             toDate, ngayBatDauTinhTien, kyThanhToanTienPhong, tienPhong, tienCoc;
     private List<Service> serviceList;
 
+    public Contract(){}
     public Contract(String cId, String daiDienNguoiThue, String rentHouse, String rentRoom,
                     String camKetNguoiThue, String fromDate, String toDate, String ngayBatDauTinhTien,
                     String kyThanhToanTienPhong, String tienPhong, String tienCoc, List<Service> serviceList) {

@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -176,13 +177,13 @@ public class ServicesSystem extends AppCompatActivity {
     public void dialogDeleteService(Service service)
     {
         Dialog dialog_delete = new Dialog(ServicesSystem.this);
-        dialog_delete.setContentView(R.layout.dialog_detele);
+        dialog_delete.setContentView(R.layout.dialog_delete);
         dialog_delete.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         String serviceId = service.getId() + "";
-        Button btnYes               = (Button) dialog_delete.findViewById(R.id.btn_allow_delete);
-        Button btnNo                = (Button) dialog_delete.findViewById(R.id.btn_cancel_delete);
-        btnYes.setOnClickListener(new View.OnClickListener() {
+        CardView cv_delete               =  dialog_delete.findViewById(R.id.cv_delete);
+        CardView cv_cancel                =  dialog_delete.findViewById(R.id.cv_cancel);
+        cv_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -192,7 +193,7 @@ public class ServicesSystem extends AppCompatActivity {
                 dialog_delete.dismiss();
             }
         });
-        btnNo.setOnClickListener(new View.OnClickListener() {
+        cv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog_delete.dismiss();

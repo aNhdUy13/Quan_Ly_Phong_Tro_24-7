@@ -1,6 +1,9 @@
 package com.nda.quanlyphongtro_free.Model;
 
-public class HoaDon {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class HoaDon implements Parcelable {
     private String id;
     private String hoaDonThang, rentHouse, rentRoom, ngayThanhToan, hanThanhToan, roomFee,
              note, totalServiceFee, noteServices;
@@ -24,6 +27,32 @@ public class HoaDon {
         this.noteServices = noteServices;
         this.daThanhToan = daThanhToan;
     }
+
+    protected HoaDon(Parcel in) {
+        id = in.readString();
+        hoaDonThang = in.readString();
+        rentHouse = in.readString();
+        rentRoom = in.readString();
+        ngayThanhToan = in.readString();
+        hanThanhToan = in.readString();
+        roomFee = in.readString();
+        note = in.readString();
+        totalServiceFee = in.readString();
+        noteServices = in.readString();
+        daThanhToan = in.readByte() != 0;
+    }
+
+    public static final Creator<HoaDon> CREATOR = new Creator<HoaDon>() {
+        @Override
+        public HoaDon createFromParcel(Parcel in) {
+            return new HoaDon(in);
+        }
+
+        @Override
+        public HoaDon[] newArray(int size) {
+            return new HoaDon[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -108,5 +137,25 @@ public class HoaDon {
 
     public void setDaThanhToan(boolean daThanhToan) {
         this.daThanhToan = daThanhToan;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(hoaDonThang);
+        parcel.writeString(rentHouse);
+        parcel.writeString(rentRoom);
+        parcel.writeString(ngayThanhToan);
+        parcel.writeString(hanThanhToan);
+        parcel.writeString(roomFee);
+        parcel.writeString(note);
+        parcel.writeString(totalServiceFee);
+        parcel.writeString(noteServices);
+        parcel.writeByte((byte) (daThanhToan ? 1 : 0));
     }
 }

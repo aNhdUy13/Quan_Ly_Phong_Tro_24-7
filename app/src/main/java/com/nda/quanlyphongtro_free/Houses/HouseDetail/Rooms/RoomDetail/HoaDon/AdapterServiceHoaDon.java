@@ -1,5 +1,6 @@
 package com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail.HoaDon;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,12 +23,12 @@ import java.util.List;
 import java.util.Locale;
 
 public class AdapterServiceHoaDon extends RecyclerView.Adapter<AdapterServiceHoaDon.HolderAddHoaDon> {
-    AddHoaDon context;
+    Context context;
     List<Service> serviceList;
     List<String> strServiceThanhTien;
 
 
-    public AdapterServiceHoaDon(AddHoaDon context, List<Service> serviceList, List<String> strServiceThanhTien) {
+    public AdapterServiceHoaDon(Context context, List<Service> serviceList, List<String> strServiceThanhTien) {
         this.context = context;
         this.serviceList = serviceList;
         this.strServiceThanhTien = strServiceThanhTien;

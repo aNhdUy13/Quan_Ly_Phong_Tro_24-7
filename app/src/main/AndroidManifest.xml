@@ -22,6 +22,9 @@
         <activity android:name=".Houses.HouseDetail.Rooms.RoomDetail.HoaDon.AddHoaDon"/>
         <activity android:name=".Houses.HouseDetail.Rooms.RoomDetail.Tenants.AddTenant"/>
         <activity android:name=".Houses.HouseDetail.Rooms.RoomDetail.RoomDetailSystem"/>
+
+        <activity android:name=".Houses.HouseDetail.Rooms.RoomDetail.HoaDon.UpdateHoaDon"/>
+
         <activity
             android:name=".Houses.HouseDetail.Rooms.AddRoom.AddRoom"/>
         <activity android:name=".Houses.AddHouse.AddHouse" />
@@ -41,7 +44,8 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".LoginSignUpActivity"
-            android:windowSoftInputMode="adjustPan">
+            android:windowSoftInputMode="adjustPan"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
