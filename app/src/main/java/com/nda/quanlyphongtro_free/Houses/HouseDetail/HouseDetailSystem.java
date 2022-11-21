@@ -2,11 +2,14 @@ package com.nda.quanlyphongtro_free.Houses.HouseDetail;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.nda.quanlyphongtro_free.Houses.UpdateHouse.UpdateHouse;
 import com.nda.quanlyphongtro_free.Houses.HousesSystem;
 import com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.AddRoom.AddRoom;
 import com.nda.quanlyphongtro_free.MainActivity;
@@ -111,8 +115,7 @@ public class HouseDetailSystem extends AppCompatActivity {
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HouseDetailSystem.this, HousesSystem.class));
-                HouseDetailSystem.this.finish();
+                backToHouseSystem();
             }
         });
 
@@ -144,10 +147,21 @@ public class HouseDetailSystem extends AppCompatActivity {
             }
         });
 
+
+        btn_deleteHouse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogDeleteHouse();
+            }
+        });
+
         img_editHouse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(HouseDetailSystem.this, UpdateHouse.class);
 
+                intent.putExtra("Data_House_Parcelable", houses);
+                startActivity(intent);
             }
         });
     }
@@ -248,6 +262,8 @@ public class HouseDetailSystem extends AppCompatActivity {
         rcv_servicesHouseDetail.setAdapter(adapterServiceInHouse);
 
         displayServices();
+
+
     }
     private void displayServices() {
         serviceList.clear();
@@ -315,10 +331,69 @@ public class HouseDetailSystem extends AppCompatActivity {
         query.addListenerForSingleValueEvent(valueEventListener);
     }
 
+
+    public void dialogDeleteHouse() {
+        Dialog dialog = new Dialog(HouseDetailSystem.this);
+        dialog.setContentView(R.layout.dialog_delete);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        CardView cv_delete = dialog.findViewById(R.id.cv_delete);
+        CardView cv_cancel = dialog.findViewById(R.id.cv_cancel);
+
+        cv_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ValueEventListener valueEventListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                        {
+                            Tenants tenants = dataSnapshot.getValue(Tenants.class);
+                            myRef.child("tenants").child(firebaseUser.getUid()).child(tenants.getId())
+                                    .removeValue();
+                        }
+
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                    }
+                };
+                Query query = myRef.child("tenants").child(firebaseUser.getUid())
+                        .orderByChild("rentHouseId").equalTo(houses.gethId());
+                query.addListenerForSingleValueEvent(valueEventListener);
+
+                myRef.child("contracts").child(firebaseUser.getUid()).child(houses.gethId()).removeValue();
+
+                myRef.child("receipt").child(firebaseUser.getUid()).child(houses.gethId()).removeValue();
+
+                myRef.child("rooms").child(firebaseUser.getUid()).child(houses.gethId()).removeValue();
+
+                myRef.child("tenants").child(firebaseUser.getUid()).child(houses.gethId()).removeValue();
+
+                myRef.child("houses").child(firebaseUser.getUid()).child(houses.gethId()).removeValue();
+
+                dialog.dismiss();
+
+                backToHouseSystem();
+            }
+        });
+
+        cv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+
+
     /***************************
      *
      *
-     * (Related)
+     * (Related) Tenant
      *
      *
      *************************** */
@@ -354,6 +429,7 @@ public class HouseDetailSystem extends AppCompatActivity {
 
 
     }
+
 
 
     private void initUI() {
@@ -395,10 +471,14 @@ public class HouseDetailSystem extends AppCompatActivity {
     }
 
 
-    @Override
-    public void onBackPressed() {
+    private void backToHouseSystem() {
         startActivity(new Intent(HouseDetailSystem.this, HousesSystem.class));
         HouseDetailSystem.this.finish();
+
+    }
+    @Override
+    public void onBackPressed() {
+        backToHouseSystem();
 
         super.onBackPressed();
     }

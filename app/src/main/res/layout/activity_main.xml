@@ -131,22 +131,20 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1">
+
                             <TextView
-                                android:text="Tổng số phòng"
+                                android:text="Tổng số dịch vụ"
                                 android:textStyle="bold"
+                                android:textColor="@color/black"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"/>
+                            <TextView
+                                android:id="@+id/getTotalAvailableServices"
+                                android:text="0"
                                 android:textColor="@color/black"
 
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
-
-                            <TextView
-                                android:id="@+id/getTotalRoom"
-                                android:textColor="@color/black"
-
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="0" />
-
                         </LinearLayout>
                     </LinearLayout>
                     <LinearLayout
@@ -183,14 +181,14 @@
                             android:layout_height="0dp"
                             android:layout_weight="1">
                             <TextView
-                                android:text="Tổng số dịch vụ"
+                                android:text="Loại Tài khoản"
                                 android:textStyle="bold"
                                 android:textColor="@color/black"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"/>
                             <TextView
-                                android:id="@+id/getTotalAvailableServices"
-                                android:text="0"
+                                android:id="@+id/txt_accountType"
+                                android:text="( Thường )"
                                 android:textColor="@color/black"
 
                                 android:layout_width="wrap_content"

@@ -1,6 +1,11 @@
 package com.nda.quanlyphongtro_free.Model;
 
-public class Tenants {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
+public class Tenants implements Parcelable {
     private String id, rentHouseId, rentRoomId;
     private String tName, tPhoneNumber, tRentHouse, tRentRoom, tEmail,
             tDob, tNoiSinh, tSoCMND, tNgayCapCMND, tNoiCapCMND;
@@ -24,6 +29,34 @@ public class Tenants {
         this.tNgayCapCMND = tNgayCapCMND;
         this.tNoiCapCMND = tNoiCapCMND;
     }
+
+    protected Tenants(Parcel in) {
+        id = in.readString();
+        rentHouseId = in.readString();
+        rentRoomId = in.readString();
+        tName = in.readString();
+        tPhoneNumber = in.readString();
+        tRentHouse = in.readString();
+        tRentRoom = in.readString();
+        tEmail = in.readString();
+        tDob = in.readString();
+        tNoiSinh = in.readString();
+        tSoCMND = in.readString();
+        tNgayCapCMND = in.readString();
+        tNoiCapCMND = in.readString();
+    }
+
+    public static final Creator<Tenants> CREATOR = new Creator<Tenants>() {
+        @Override
+        public Tenants createFromParcel(Parcel in) {
+            return new Tenants(in);
+        }
+
+        @Override
+        public Tenants[] newArray(int size) {
+            return new Tenants[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -116,5 +149,27 @@ public class Tenants {
 
     public void settNoiCapCMND(String tNoiCapCMND) {
         this.tNoiCapCMND = tNoiCapCMND;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(rentHouseId);
+        parcel.writeString(rentRoomId);
+        parcel.writeString(tName);
+        parcel.writeString(tPhoneNumber);
+        parcel.writeString(tRentHouse);
+        parcel.writeString(tRentRoom);
+        parcel.writeString(tEmail);
+        parcel.writeString(tDob);
+        parcel.writeString(tNoiSinh);
+        parcel.writeString(tSoCMND);
+        parcel.writeString(tNgayCapCMND);
+        parcel.writeString(tNoiCapCMND);
     }
 }

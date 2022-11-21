@@ -1,6 +1,7 @@
 package com.nda.quanlyphongtro_free.Houses.AddHouse;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,12 @@ import com.nda.quanlyphongtro_free.R;
 import java.util.List;
 
 public class AdapterSelectDistrict extends RecyclerView.Adapter<AdapterSelectDistrict.HolderAddHouse> {
-    AddHouse context;
+    Context context;
     List<String> stringList;
     Dialog dialog;
     TextView txt_selectQuanHuyen;
 
-    public AdapterSelectDistrict(AddHouse context, List<String> stringList, Dialog dialog,
+    public AdapterSelectDistrict(Context context, List<String> stringList, Dialog dialog,
                                  TextView txt_selectQuanHuyen) {
         this.context = context;
         this.stringList = stringList;

@@ -98,6 +98,36 @@ public class AdapterHoaDon extends RecyclerView.Adapter<AdapterHoaDon.HolderHoaD
         });
     }
 
+
+    @Override
+    public int getItemCount() {
+        return hoaDonList.size();
+    }
+
+    public class HolderHoaDon extends RecyclerView.ViewHolder {
+        TextView txt_dateHoaDon, txt_houseName, txt_roomName, txt_tongTien, txt_roomFee, txt_serviceFee, txt_showFullSelectedTime;
+
+        TextView txt_chuaThanhToan, txt_daThanhToan;
+
+        CardView cv_hoaDon;
+        public HolderHoaDon(@NonNull View itemView) {
+            super(itemView);
+
+            txt_dateHoaDon = itemView.findViewById(R.id.txt_dateHoaDon);
+            txt_houseName = itemView.findViewById(R.id.txt_houseName);
+            txt_roomName = itemView.findViewById(R.id.txt_roomName);
+            txt_tongTien = itemView.findViewById(R.id.txt_tongTien);
+            txt_roomFee = itemView.findViewById(R.id.txt_roomFee);
+            txt_serviceFee = itemView.findViewById(R.id.txt_serviceFee);
+            txt_showFullSelectedTime = itemView.findViewById(R.id.txt_showFullSelectedTime);
+
+            txt_chuaThanhToan = itemView.findViewById(R.id.txt_chuaThanhToan);
+            txt_daThanhToan = itemView.findViewById(R.id.txt_daThanhToan);
+
+            cv_hoaDon   = itemView.findViewById(R.id.cv_hoaDon);
+        }
+    }
+
     private void bottomSheetHoaDonOption(HoaDon hoaDon) {
         View view = context.getLayoutInflater().inflate(R.layout.bottomsheet_hoadon_option,null);
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
@@ -131,34 +161,5 @@ public class AdapterHoaDon extends RecyclerView.Adapter<AdapterHoaDon.HolderHoaD
 
     }
 
-
-    @Override
-    public int getItemCount() {
-        return hoaDonList.size();
-    }
-
-    public class HolderHoaDon extends RecyclerView.ViewHolder {
-        TextView txt_dateHoaDon, txt_houseName, txt_roomName, txt_tongTien, txt_roomFee, txt_serviceFee, txt_showFullSelectedTime;
-
-        TextView txt_chuaThanhToan, txt_daThanhToan;
-
-        CardView cv_hoaDon;
-        public HolderHoaDon(@NonNull View itemView) {
-            super(itemView);
-
-            txt_dateHoaDon = itemView.findViewById(R.id.txt_dateHoaDon);
-            txt_houseName = itemView.findViewById(R.id.txt_houseName);
-            txt_roomName = itemView.findViewById(R.id.txt_roomName);
-            txt_tongTien = itemView.findViewById(R.id.txt_tongTien);
-            txt_roomFee = itemView.findViewById(R.id.txt_roomFee);
-            txt_serviceFee = itemView.findViewById(R.id.txt_serviceFee);
-            txt_showFullSelectedTime = itemView.findViewById(R.id.txt_showFullSelectedTime);
-
-            txt_chuaThanhToan = itemView.findViewById(R.id.txt_chuaThanhToan);
-            txt_daThanhToan = itemView.findViewById(R.id.txt_daThanhToan);
-
-            cv_hoaDon   = itemView.findViewById(R.id.cv_hoaDon);
-        }
-    }
 
 }

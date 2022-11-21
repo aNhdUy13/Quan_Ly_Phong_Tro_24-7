@@ -28,9 +28,8 @@
                 android:layout_marginTop="15dp"
                 android:orientation="vertical"
                 android:weightSum="2">
-
                 <TextView
-                    android:id="@+id/txt_editHoaDon"
+                    android:id="@+id/txt_callTenant"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="4dp"
@@ -38,13 +37,29 @@
                     android:gravity="center|left"
 
 
-                    android:text="Chi tiết / Cập nhật Hóa Đơn"
+                    android:text="Gọi điện (Phone Number)"
+
+                    android:drawableLeft="@drawable/ic_baseline_call_24"
+
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/txt_editTenant"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="4dp"
+                    android:drawablePadding="5dp"
+                    android:gravity="center|left"
+
+
+                    android:text="Chi tiết / Cập nhật Người Thuê"
 
                     android:drawableLeft="@drawable/ic_baseline_edit_24"
 
                     android:textColor="@color/black" />
+
                 <TextView
-                    android:id="@+id/txt_deleteHoaDon"
+                    android:id="@+id/txt_deleteTenant"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="5dp"
@@ -52,7 +67,7 @@
                     android:gravity="center|left"
 
 
-                    android:text="Xóa Hóa Đơn"
+                    android:text="Xóa Người Thuê"
 
                     android:drawableLeft="@drawable/ic_baseline_delete_forever_24"
 

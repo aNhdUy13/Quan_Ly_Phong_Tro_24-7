@@ -1,14 +1,23 @@
 package com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.nda.quanlyphongtro_free.Model.HoaDon;
 import com.nda.quanlyphongtro_free.Model.Tenants;
 import com.nda.quanlyphongtro_free.R;
 
@@ -42,7 +51,7 @@ public class AdapterTenants extends RecyclerView.Adapter<AdapterTenants.HolderTe
         holder.cv_tenant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                bottomSheetTenantOption(tenants);
             }
         });
     }
@@ -66,4 +75,73 @@ public class AdapterTenants extends RecyclerView.Adapter<AdapterTenants.HolderTe
 
         }
     }
+
+    private void bottomSheetTenantOption(Tenants tenants) {
+        View view = context.getLayoutInflater().inflate(R.layout.bottomsheet_tenant_option,null);
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
+        bottomSheetDialog.setContentView(view);
+
+        TextView txt_callTenant = view.findViewById(R.id.txt_callTenant);
+        TextView txt_editTenant = view.findViewById(R.id.txt_editTenant);
+        TextView txt_deleteTenant = view.findViewById(R.id.txt_deleteTenant);
+
+        CardView cv_closeBottomSheet = view.findViewById(R.id.cv_closeBottomSheet);
+
+        txt_callTenant.setText("Gọi điện (" + tenants.gettPhoneNumber() + " )" );
+        txt_callTenant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                executeCallTenant(tenants.gettPhoneNumber());
+            }
+        });
+
+        txt_editTenant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context.editTenant(tenants, bottomSheetDialog);
+            }
+        });
+
+        txt_deleteTenant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                context.dialogConfirmDeleteTenant(tenants, bottomSheetDialog);
+            }
+        });
+
+        cv_closeBottomSheet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomSheetDialog.dismiss();
+            }
+        });
+        bottomSheetDialog.show();
+
+    }
+
+    private void executeCallTenant(String phoneNumber) {
+        if (phoneNumber.isEmpty())
+        {
+            Toast.makeText(context, "Error : Số điện thoại bị bỏ trống", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE)
+                    != PackageManager.PERMISSION_GRANTED)
+            {
+                ActivityCompat.requestPermissions(context,
+                        new String[]{Manifest.permission.CALL_PHONE}, 1);
+            }
+            else
+            {
+                String s = "tel:" + phoneNumber;
+                context.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(s)));
+            }
+
+        }
+
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + "phone_number"));
+    }
+
 }

@@ -8,7 +8,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -36,11 +35,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.nda.quanlyphongtro_free.Houses.HouseDetail.HouseDetailSystem;
-import com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.AddRoom.AddRoom;
 import com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail.HoaDon.AdapterHoaDon;
 import com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail.HoaDon.AddHoaDon;
 import com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail.HoaDon.UpdateHoaDon;
 import com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail.Tenants.AddTenant;
+import com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail.Tenants.UpdateTenant;
 import com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.UpdateRoom.UpdateRoom;
 import com.nda.quanlyphongtro_free.MainActivity;
 import com.nda.quanlyphongtro_free.Model.Contract;
@@ -961,6 +960,46 @@ public class RoomDetailSystem extends AppCompatActivity {
 
 
     }
+
+    public void editTenant(Tenants tenants, BottomSheetDialog bottomSheetDialog)
+    {
+        Intent intent = new Intent(RoomDetailSystem.this, UpdateTenant.class);
+
+        intent.putExtra("Data_House_Parcelable", houses);
+        intent.putExtra("Data_Room_Parcelable", rooms);
+        intent.putExtra("Data_Tenant_Parcelable", tenants);
+
+        startActivity(intent);
+    }
+
+    public void dialogConfirmDeleteTenant(Tenants tenants, BottomSheetDialog bottomSheetDialog) {
+        Dialog dialog = new Dialog(RoomDetailSystem.this);
+        dialog.setContentView(R.layout.dialog_delete);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        CardView cv_delete = dialog.findViewById(R.id.cv_delete);
+        CardView cv_cancel = dialog.findViewById(R.id.cv_cancel);
+
+        cv_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                myRef.child("tenants").child(firebaseUser.getUid()).child(tenants.getId()).removeValue();
+
+                displayTenants();
+                dialog.dismiss();
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        cv_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
 
 
     /***************************

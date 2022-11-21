@@ -286,9 +286,13 @@ public class UpdateRoom extends AppCompatActivity {
         myRef.child("rooms").child(firebaseUser.getUid()).child(houses.gethId())
                 .child(rooms.getId()).setValue(updateRoom);
 
-        Toast.makeText(this, "Thêm phòng Thành Công !", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Cập nhật phòng Thành Công !", Toast.LENGTH_SHORT).show();
 
-        backToRoom();
+
+        Intent intent = new Intent(UpdateRoom.this, HouseDetailSystem.class);
+        intent.putExtra("Data_House_Parcelable", houses);
+        startActivity(intent);
+        UpdateRoom.this.finish();
     }
 
 

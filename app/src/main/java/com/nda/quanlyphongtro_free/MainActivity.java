@@ -21,7 +21,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     CardView cvNhaTro, cvDichVu,cv_quanLyTenants;
 
-    TextView getTotalHouse, getTotalRoom,getTotalTenants,getTotalAvailableServices;
+    TextView getTotalHouse,getTotalTenants,getTotalAvailableServices;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
         cv_quanLyTenants    = (CardView) findViewById(R.id.cv_quanLyTenants);
 
         getTotalHouse   = (TextView) findViewById(R.id.getTotalHouse);
-        getTotalRoom    = (TextView) findViewById(R.id.getTotalRoom);
         getTotalTenants = (TextView) findViewById(R.id.getTotalTenants);
         getTotalAvailableServices   = (TextView) findViewById(R.id.getTotalAvailableServices);
 

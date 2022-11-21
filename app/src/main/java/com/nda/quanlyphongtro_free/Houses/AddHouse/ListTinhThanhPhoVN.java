@@ -6,7 +6,7 @@ import java.util.List;
 
 public class ListTinhThanhPhoVN {
 
-    public static List<String> listTinhThanhPho = Arrays.asList("Hà Nội","Thành phố Hồ Chí Minh","An Giang",
+    public static List<String> listTinhThanhPho = Arrays.asList("Hà Nội","Hồ Chí Minh","An Giang",
             "Bà rịa – Vũng tàu", "Bắc Giang", "Bắc Kạn", "Bạc Liêu",
             "Bắc Ninh", "Bến Tre", "Bình Định", "Bình Dương", "Bình Phước", "Bình Thuận", "Cà Mau", "Cần Thơ", "Cao Bằng", "Đà Nẵng",
             "Đắk Lắk", "Đắk Nông", "Điện Biên", "Đồng Nai", "Đồng Tháp", "Gia Lai", "Hà Giang", "Hà Nam",  "Hà Tĩnh",

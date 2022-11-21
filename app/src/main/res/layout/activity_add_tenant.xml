@@ -8,16 +8,14 @@
     tools:context=".Houses.HousesSystem">
 
     <LinearLayout
-        android:weightSum="10"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
             android:background="#4CAF50"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:weightSum="2"
-            android:layout_weight="0.7">
+            android:layout_height="45dp"
+            android:weightSum="2">
             <LinearLayout
                 android:layout_weight="0.3"
                 android:layout_width="0dp"
@@ -67,7 +65,7 @@
             android:id="@+id/HousesContent"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="9.3"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <ScrollView
