@@ -19,6 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuanLyPhongTro_FREE">
 
+        <activity android:name=".Note.NoteManagement"/>
+        <activity android:name=".Note.AddUpdateNote"/>
         <activity android:name=".Houses.UpdateHouse.UpdateHouse"/>
         <activity android:name=".Houses.HouseDetail.Rooms.RoomDetail.Tenants.UpdateTenant"/>
         <activity android:name=".Houses.HouseDetail.Rooms.UpdateRoom.UpdateRoom"/>

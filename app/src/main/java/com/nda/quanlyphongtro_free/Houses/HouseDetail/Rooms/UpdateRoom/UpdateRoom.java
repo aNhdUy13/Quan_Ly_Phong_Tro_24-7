@@ -80,7 +80,7 @@ public class UpdateRoom extends AppCompatActivity {
         houses = getIntent().getParcelableExtra("Data_House_Parcelable");
         rooms = getIntent().getParcelableExtra("Data_Room_Parcelable");
 
-        txt_addRoomTitle.setText("Sửa Phòng của nhà ( " + houses.gethName() + " )");
+        txt_addRoomTitle.setText("Cập nhật phòng của nhà ( " + houses.gethName() + " )");
         textInputEdt_getTenPhong.setText(rooms.getrName());
 
         /**

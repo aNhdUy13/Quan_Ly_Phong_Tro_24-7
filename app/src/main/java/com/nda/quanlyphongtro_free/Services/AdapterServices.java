@@ -106,7 +106,7 @@ public class AdapterServices extends RecyclerView.Adapter<AdapterServices.Holder
 
     private void imageAdap(String signal,  ImageView imgShow) {
         // Set default image
-        imgShow.setImageResource(R.drawable.ic_teamwork);
+        imgShow.setImageResource(R.drawable.ic_options);
 
         // Check and assign between image and signal
         if (signal.equals("1"))

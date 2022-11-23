@@ -681,7 +681,7 @@ public class RoomDetailSystem extends AppCompatActivity {
         rcv_services = dialog.findViewById(R.id.rcv_services);
 
 
-        txt_contractTitle.setText("Sửa hợp đồng");
+        txt_contractTitle.setText("Cập nhật hợp đồng");
         textInputEdt_daiDienNguoiThue.setText(contractForUpdate.getDaiDienNguoiThue());
         txt_showRentHouse.setText(contractForUpdate.getRentHouse());
         txt_showRentRoom.setText(contractForUpdate.getRentRoom());
@@ -736,7 +736,7 @@ public class RoomDetailSystem extends AppCompatActivity {
         rcv_services.setLayoutManager(linearLayoutManager);
         rcv_services.setAdapter(adapterServiceOfRoom);
 
-        btn_addContract.setText("Cập Nhập");
+        btn_addContract.setText("Cập Nhật");
         btn_addContract.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

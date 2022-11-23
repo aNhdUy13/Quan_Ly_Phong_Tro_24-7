@@ -279,7 +279,7 @@ public class AddHouse extends AppCompatActivity {
                 {
                     Service service =dataSnapshot.getValue(Service.class);
 
-                    serviceList.add(0,service);
+                    serviceList.add(service);
 
                 }
 

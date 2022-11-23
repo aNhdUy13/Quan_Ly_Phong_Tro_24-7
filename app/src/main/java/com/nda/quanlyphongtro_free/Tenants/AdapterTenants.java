@@ -62,7 +62,7 @@ public class AdapterTenants extends RecyclerView.Adapter<AdapterTenants.HolderTe
         holder.txt_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                context.dialogConfirmDeleteTenant(tenants);
             }
         });
     }
@@ -85,7 +85,7 @@ public class AdapterTenants extends RecyclerView.Adapter<AdapterTenants.HolderTe
             txt_roomName = itemView.findViewById(R.id.txt_roomName);
             txt_tenantPhonenumber = itemView.findViewById(R.id.txt_tenantPhonenumber);
 
-            txt_call = itemView.findViewById(R.id.txt_tenantName);
+            txt_call = itemView.findViewById(R.id.txt_call);
             txt_update = itemView.findViewById(R.id.txt_update);
             txt_delete = itemView.findViewById(R.id.txt_delete);
 

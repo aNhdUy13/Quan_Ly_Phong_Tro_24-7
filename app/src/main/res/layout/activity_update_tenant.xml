@@ -53,7 +53,7 @@
                 android:layout_height="match_parent">
                 <ImageView
                     android:id="@+id/img_addTenant"
-                    android:src="@drawable/ic_baseline_add_512"
+                    android:src="@drawable/ic_baseline_check_512"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_marginRight="15dp"/>

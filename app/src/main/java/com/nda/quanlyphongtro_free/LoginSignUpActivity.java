@@ -210,7 +210,9 @@ public class LoginSignUpActivity extends AppCompatActivity {
                                     uName,
                                     uPhoneNumber,
                                     firebaseUser.getEmail(),
-                                    password
+                                    password,
+                                    "Thường",
+                                    ""
                             );
                             myRef.child("users").child(firebaseUser.getUid()).setValue(users);
 
