@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.nda.quanlyphongtro_free.Houses.HousesSystem;
+import com.nda.quanlyphongtro_free.JoinRoom.JoinRoomSystem;
 import com.nda.quanlyphongtro_free.Model.Houses;
 import com.nda.quanlyphongtro_free.Model.Rooms;
 import com.nda.quanlyphongtro_free.Model.Service;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
-    CardView cvNhaTro, cvDichVu,cv_quanLyTenants, cv_note;
+    CardView cvNhaTro, cvDichVu,cv_quanLyTenants, cv_note, cv_joinRoom;
 
     ImageView img_vipAccount, img_logout;
     TextView txt_userName,txt_accountType, txt_totalHouse,txt_totalTenants,txt_totalServices;
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 finishAffinity();
             }
         });
+
         cvNhaTro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,24 +80,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         cv_quanLyTenants.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, TenantsSystem.class));
-
             }
         });
-
 
         cv_note.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this, NoteManagement.class));
-
             }
         });
 
+        cv_joinRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, JoinRoomSystem.class));
+            }
+        });
 
     }
 
@@ -105,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         cvDichVu    =  findViewById(R.id.cvDichVu);
         cv_quanLyTenants    =  findViewById(R.id.cv_quanLyTenants);
         cv_note = findViewById(R.id.cv_note);
+        cv_joinRoom = findViewById(R.id.cv_joinRoom);
 
         txt_userName = findViewById(R.id.txt_userName);
         txt_accountType = findViewById(R.id.txt_accountType);

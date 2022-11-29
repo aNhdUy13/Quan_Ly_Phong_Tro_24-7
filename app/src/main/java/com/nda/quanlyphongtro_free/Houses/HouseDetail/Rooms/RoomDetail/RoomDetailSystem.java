@@ -2,6 +2,9 @@ package com.nda.quanlyphongtro_free.Houses.HouseDetail.Rooms.RoomDetail;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -67,7 +70,7 @@ public class RoomDetailSystem extends AppCompatActivity {
 
     ShimmerFrameLayout shimmer_view_container;
 
-    ImageView imgBack,img_addTenants, img_editRoom, img_addHoaDon;
+    ImageView imgBack,img_addTenants, img_editRoom, img_addHoaDon , img_copyHouseRoomID;
     TextView txt_roomName, txt_numberOfTenants;
 
     CardView cv_contact;
@@ -87,7 +90,7 @@ public class RoomDetailSystem extends AppCompatActivity {
     TextView txt_roomFee, txt_area, txt_floorNumber, txt_numberOfBedRooms, txt_numberOfLivingRooms,
             txt_limitTenants, txt_deposits;
     TextView txt_genderMale, txt_genderFemale, txt_genderOther;
-    TextView txt_description, txt_noteForTenants;
+    TextView txt_description, txt_noteForTenants, txt_roomHouseID;
 
     Button btn_deleteRoom;
 
@@ -115,6 +118,8 @@ public class RoomDetailSystem extends AppCompatActivity {
     private void init() {
         houses = getIntent().getParcelableExtra("Data_RoomOfHouse_Parcelable");
         rooms  = getIntent().getParcelableExtra("Data_Room_Parcelable");
+
+        txt_roomHouseID.setText(houses.gethId() + "_splitHere_" + rooms.getId()+ "_splitHere_" + firebaseUser.getUid());
 
         txt_roomName.setText(rooms.getrName());
 
@@ -214,6 +219,18 @@ public class RoomDetailSystem extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 executeContract();
+            }
+        });
+
+        img_copyHouseRoomID.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("HouseRoomID", txt_roomHouseID.getText().toString().trim());
+                clipboard.setPrimaryClip(clip);
+
+                Toast.makeText(RoomDetailSystem.this, "Sao chép Mã Phòng !", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -1190,13 +1207,6 @@ public class RoomDetailSystem extends AppCompatActivity {
 
 
 
-
-
-
-
-
-
-
     private void backToHouseDetailSystem()
     {
         Intent intent = new Intent(RoomDetailSystem.this, HouseDetailSystem.class);
@@ -1215,6 +1225,7 @@ public class RoomDetailSystem extends AppCompatActivity {
         img_addTenants  =  findViewById(R.id.img_addTenants);
         img_editRoom    = findViewById(R.id.img_editRoom);
         img_addHoaDon   = findViewById(R.id.img_addHoaDon);
+        img_copyHouseRoomID = findViewById(R.id.img_copyHouseRoomID);
 
         rcv_tenants     =  findViewById(R.id.rcv_tenants);
 
@@ -1222,6 +1233,7 @@ public class RoomDetailSystem extends AppCompatActivity {
 
         txt_roomName        =  findViewById(R.id.txt_roomName);
         txt_numberOfTenants = findViewById(R.id.txt_numberOfTenants);
+        txt_roomHouseID     = findViewById(R.id.txt_roomHouseID);
 
         ll_danhSachTenants  =  findViewById(R.id.ll_danhSachTenants);
         ll_chiTietPhong     =  findViewById(R.id.ll_chiTietPhong);
